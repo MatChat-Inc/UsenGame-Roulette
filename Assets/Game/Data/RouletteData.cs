@@ -3,35 +3,41 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Sirenix.OdinInspector;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace USEN.Games.Roulette
 {
-    // A roulette data object represents a single roulette wheel.
-    // It contains a list of sectors, each with a content and a weight.
-    [JsonObject(MemberSerialization.OptIn)]
-    [CreateAssetMenu(fileName = "Roulette", menuName = "Scriptable Objects/Roulette/Roulette")]
-    public class RouletteData : ScriptableObject
+    [Table("roulettes")]
+    public class RouletteData
     {
-        [ReadOnly] [JsonProperty] public string id;
-        [JsonProperty] public string title;
+        [PrimaryKey] [AutoIncrement] [JsonIgnore] 
+        public int ID { get; set; }
+
+        public string Title { get; set; }
+        public long Timestamp { get; } = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+        public string SectorJson
+        {
+            get => JsonConvert.SerializeObject(sectors);
+            set => sectors = JsonConvert.DeserializeObject<List<RouletteSector>>(value);
+        }
         
-        [JsonProperty] 
-        [TableList(ShowIndexLabels = true, AlwaysExpanded = true, DrawScrollView = false)]
         public List<RouletteSector> sectors = new();
+        
+
+        public string category;
 
         public RouletteData()
         {
-            id = Guid.NewGuid().ToString();
+            // ID = Guid.NewGuid().ToString();
         }
         
         // Copy constructor.
         public RouletteData(RouletteData other)
         {
-            id = other.id;
-            title = other.title;
+            ID = other.ID;
+            Title = other.Title;
             sectors = new();
             for (int i = 0; i < other.sectors.Count; i++)
                 sectors.Add(new RouletteSector(other.sectors[i]));
@@ -39,11 +45,6 @@ namespace USEN.Games.Roulette
 
         public void OnValidate()
         {
-            if (string.IsNullOrEmpty(id))
-                id = Guid.NewGuid().ToString();
-            
-            if (string.IsNullOrEmpty(name))
-                title = base.name;
             
             for (int i = 0; i < sectors.Count; i++)
             {

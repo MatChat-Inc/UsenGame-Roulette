@@ -4,22 +4,17 @@ using System;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using UnityEngine;
-using Sirenix.OdinInspector;
 
 namespace USEN.Games.Roulette
 {
-    [Serializable]
     public class RouletteSector
     {
-        [TableColumnWidth(150, Resizable = true)]
-        [HideInInspector] public int id;
-        [VerticalGroup("Data"), LabelWidth(50)] public string content;
-        [VerticalGroup("Data"), LabelWidth(50)] public float weight = 1;
-        [VerticalGroup("Data"), LabelWidth(80)] [InspectorName("Color")] [JsonIgnore] public Color color;
+        public int id;
+        public string content; 
+        public float weight = 1;
+        [JsonIgnore] public Color color;
         
-        [HideInInspector] 
-        [JsonProperty("color")]
-        public System.Drawing.Color scolor;
+        [JsonProperty("color")] public System.Drawing.Color scolor;
         
         public RouletteSector() {}
 

@@ -22,8 +22,8 @@ namespace USEN.Games.Roulette
         
         public AudioClip bgmClip;
         
-        private RouletteDAO _dao;
-        private RouletteDataset _dataset;
+        private RouletteManager _manager;
+        private RouletteCategories _categories;
         
         private void Start()
         {
@@ -36,9 +36,8 @@ namespace USEN.Games.Roulette
             // Widget.Load(GetType().Namespace);
             
             // Load the roulette data
-            RouletteDAO.Instance.ContinueWith(async task => {
-                _dao = task.Result;
-                _dataset = _dao.Data;
+            RouletteManager.Instance.Sync().ContinueWith(async task => {
+                _categories = task.Result;
                 startButton.interactable = true;
                 EventSystem.current.SetSelectedGameObject(startButton.gameObject);
             }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -71,7 +70,7 @@ namespace USEN.Games.Roulette
             {
                 case RouletteDisplayMode.Normal:
                     Navigator.Push<RouletteCategoryView>((view) => {
-                        view.Categories = _dataset.categories;
+                        view.Categories = _categories.categories;
                     });
                     break;
                 case RouletteDisplayMode.Random:
@@ -82,7 +81,7 @@ namespace USEN.Games.Roulette
 
         public void PlayRandomGame()
         {
-            var category = _dataset.categories.First(); //[Random.Range(0, _dataset.categories.Count)];
+            var category = _categories.categories.First(); //[Random.Range(0, _dataset.categories.Count)];
             var rouletteData = category.roulettes[Random.Range(0, category.roulettes.Count)];
             Navigator.Push<RouletteGameView>((view) => {
                 view.RouletteData = rouletteData;

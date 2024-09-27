@@ -9,9 +9,7 @@ using UnityEngine;
 
 namespace USEN.Games.Roulette
 {
-    [JsonObject(MemberSerialization.OptIn)]
-    [CreateAssetMenu(fileName = "RouletteDatabase", menuName = "Scriptable Objects/Roulette/Roulette Database")]
-    public class RouletteDataset : ScriptableObject
+    public class RouletteCategories
     {
         [JsonProperty] public Version version;
         [JsonProperty] public List<RouletteCategory> categories = new();

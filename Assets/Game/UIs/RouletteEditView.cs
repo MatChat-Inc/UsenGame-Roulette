@@ -46,7 +46,7 @@ namespace USEN.Games.Roulette
                         title.text = "編集";
                     else title.text = "新規作成";
                 }
-                gameTitle.text = value.title;
+                gameTitle.text = value.Title;
                 sectorListView.Data = _data.sectors;
                 sectorCounter.text = $"{value.sectors.Count}";
             }
@@ -56,7 +56,7 @@ namespace USEN.Games.Roulette
         {
             gameTitle.onValueChanged.AddListener((value) =>
             {
-                Data.title = value;
+                Data.Title = value;
             });
             
             sectorListView.onCellCreated += (index, cell) =>
@@ -87,9 +87,7 @@ namespace USEN.Games.Roulette
             bottomPanel.onRedButtonClicked += () =>
             {
                 Navigator.Pop(Data);
-                RouletteDAO.Instance.ContinueWith(async task => {
-                    task.Result?.SaveToFile();
-                }, TaskScheduler.FromCurrentSynchronizationContext());
+                RouletteManager.Instance.Sync();
             };
             
             // Delete the selected sector when the yellow button is clicked

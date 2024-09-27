@@ -25,7 +25,7 @@ namespace USEN.Games.Roulette
         
         private EditMode _editMode;
         
-        private RouletteDAO _dao;
+        private RouletteManager _manager;
         private RouletteCategory _category;
         public RouletteCategory Category
         {
@@ -64,7 +64,7 @@ namespace USEN.Games.Roulette
             rouletteGameSelectionList.onCellSubmitted += (index, cell) => OnConfirmButtonClicked();
             rouletteContentList.onCellSubmitted += (index, cell) => OnConfirmButtonClicked();
             
-            _dao = await RouletteDAO.Instance;
+            _manager = RouletteManager.Instance;
         }
 
         private void Start()
@@ -155,10 +155,11 @@ namespace USEN.Games.Roulette
                 }
                 else
                 {
-                    _dao?.Data?.categories?.Last()?.roulettes?.Add(result);
+                    result.category = "オリジナル";
+                    _manager.AddRoulette(result);
                 }
                 
-                _dao?.SaveToFile();
+                _manager.Sync();
             }
         }
 
@@ -166,7 +167,7 @@ namespace USEN.Games.Roulette
         {
             // Create new roulette
             var roulette = new RouletteData();
-            roulette.title = "新規ルーレット";
+            roulette.Title = "新規ルーレット";
             roulette.sectors = new List<RouletteSector>();
             for (int i = 0; i < 8; i++)
             {
@@ -196,10 +197,11 @@ namespace USEN.Games.Roulette
                 }
                 else
                 {
-                    _dao?.Data?.categories?.Last()?.roulettes?.Add(result);
+                    result.category = "オリジナル";
+                    _manager.AddRoulette(result);
                 }
                 
-                _dao?.SaveToFile();
+                _manager?.Sync();
             }
         }
         
@@ -217,7 +219,7 @@ namespace USEN.Games.Roulette
                 rouletteWheel.RouletteData = rouletteGameSelectionList.SelectedData;
             else rouletteWheel.RouletteData = null;
             
-            _dao?.SaveToFile();
+            _manager?.Sync();
         }
         
         private void ShowContentView()

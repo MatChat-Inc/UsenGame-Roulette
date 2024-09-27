@@ -26,9 +26,9 @@ namespace USEN.Games.Roulette
             
             if (Categories.IsNullOrEmpty())
             {
-                RouletteDAO.Instance.ContinueWith(task =>
+                RouletteManager.Instance.Sync().ContinueWith(task =>
                 {
-                    Categories = task.Result.Data.categories;
+                    Categories = RouletteManager.Instance.GetCategories();
                     listView.FocusOnCell(0);
                 });
             }
