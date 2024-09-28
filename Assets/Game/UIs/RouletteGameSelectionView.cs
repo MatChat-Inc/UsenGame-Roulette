@@ -155,7 +155,7 @@ namespace USEN.Games.Roulette
                 }
                 else
                 {
-                    result.category = "オリジナル";
+                    result.Category = "オリジナル";
                     _manager.AddRoulette(result);
                 }
                 
@@ -197,7 +197,7 @@ namespace USEN.Games.Roulette
                 }
                 else
                 {
-                    result.category = "オリジナル";
+                    result.Category = "オリジナル";
                     _manager.AddRoulette(result);
                 }
                 

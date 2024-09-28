@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Luna.Extensions;
 using Luna.Extensions.Unity;
 using Newtonsoft.Json;
-using Unity.VisualScripting.Dependencies.Sqlite;
+using SQLite;
 using UnityEngine;
 
 namespace USEN.Games.Roulette
@@ -18,6 +18,7 @@ namespace USEN.Games.Roulette
 
         public string Title { get; set; }
         public long Timestamp { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        public string Category { get; set; }
 
         public string SectorJson
         {
@@ -28,7 +29,7 @@ namespace USEN.Games.Roulette
         public List<RouletteSector> sectors = new();
         
 
-        public string category;
+
 
         public RouletteData()
         {

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "cc.lunareclipse.lunarfamework": "file:./LunarFramework",
+    "com.gilzoide.sqlite-net": "https://github.com/gilzoide/unity-sqlite-net.git",
     "com.nobi.roundedcorners": "https://github.com/kirevdokimov/Unity-UI-Rounded-Corners.git",
     "com.unity.ai.navigation": "2.0.4",
     "com.unity.ide.rider": "3.0.31",
@@ -15,7 +16,6 @@
     "com.unity.timeline": "1.8.7",
     "com.unity.ugui": "2.0.0",
     "com.unity.uiextensions": "https://github.com/949886/com.unity.uiextensions.git",
-    "com.unity.visualscripting": "1.9.4",
     "uishadow": "https://github.com/LunarLibrary/Unity-UIShadow.git",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.ai": "1.0.0",

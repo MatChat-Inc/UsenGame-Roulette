@@ -9,6 +9,13 @@
         "com.unity.textmeshpro": "3.0.6"
       }
     },
+    "com.gilzoide.sqlite-net": {
+      "version": "https://github.com/gilzoide/unity-sqlite-net.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "6e9a7dc4578eff2110eb5745f30159a555c333d5"
+    },
     "com.nobi.roundedcorners": {
       "version": "https://github.com/kirevdokimov/Unity-UI-Rounded-Corners.git",
       "depth": 0,
@@ -271,16 +278,6 @@
       "source": "git",
       "dependencies": {},
       "hash": "e54be66d218be8df22d631e0c3ce36af458fbc82"
-    },
-    "com.unity.visualscripting": {
-      "version": "1.9.4",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.ugui": "1.0.0",
-        "com.unity.modules.jsonserialize": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
     },
     "uishadow": {
       "version": "https://github.com/LunarLibrary/Unity-UIShadow.git",

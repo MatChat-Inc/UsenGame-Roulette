@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Unity.VisualScripting.Dependencies.Sqlite;
+using SQLite;
 using UnityEngine;
 
 namespace USEN.Games.Roulette
@@ -29,7 +29,12 @@ namespace USEN.Games.Roulette
                 Directory.CreateDirectory(databaseDirectory!);
 
             db = new SQLiteConnection(databasePath);
-            db.CreateTable<RouletteData>();
+            
+            Debug.Log($"[RouletteManager] Database path: {databasePath}");
+            
+            var result = db.CreateTable<RouletteData>();
+            
+            Debug.Log($"[RouletteManager] Database create table: {result}");
             
             var all = db.Table<RouletteData>().ToList();
 
@@ -38,12 +43,16 @@ namespace USEN.Games.Roulette
                 Debug.Log("[RouletteManager] Database is empty. Inserting default data.");
                 
                 var json = Resources.Load<TextAsset>("roulette").text;
+
                 var categories = JsonConvert.DeserializeObject<RouletteCategories>(json);
+                
+                Debug.Log($"[RouletteManager] Inserting {categories.categories.Sum(c => c.roulettes.Count)} roulettes.");
+                
                 db.RunInTransaction(() => {
                     foreach (var category in categories.categories)
                         foreach (var roulette in category.roulettes)
                         {
-                            roulette.category = category.title;
+                            roulette.Category = category.title;
                             db.Insert(roulette);
                         }
                 });
@@ -57,8 +66,11 @@ namespace USEN.Games.Roulette
             {
                 if (task.IsFaulted)
                 {
-                    Debug.LogError(task.Exception);
-                    return null;
+                    Debug.LogError($"[RouletteManager] Sync error: {task.Exception}");
+                    return new RouletteCategories()
+                    {
+                        categories = GetCategories()
+                    };
                 }
 
                 var categories = task.Result.categories;
@@ -68,7 +80,7 @@ namespace USEN.Games.Roulette
                     foreach (var category in categories)
                         foreach (var roulette in category.roulettes)
                         {
-                            roulette.category = category.title;
+                            roulette.Category = category.title;
                             db.Insert(roulette);
                         }
                 });
@@ -85,7 +97,7 @@ namespace USEN.Games.Roulette
             var data = db.Table<RouletteData>().ToList();
             var categories =
                 from roulette in data
-                group roulette by roulette.category
+                group roulette by roulette.Category
                 into g
                 select new RouletteCategory
                 {
@@ -101,7 +113,7 @@ namespace USEN.Games.Roulette
             var data = db.Table<RouletteData>().ToList();
             var roulettes =
                 from roulette in data
-                where roulette.category == title
+                where roulette.Category == title
                 select roulette;
             
             return new RouletteCategory
@@ -119,7 +131,7 @@ namespace USEN.Games.Roulette
 
             var result =
                 from roulette in data
-                where roulette.category == "バツゲーム"
+                where roulette.Category == "バツゲーム"
                 select roulette;
             var batuGames = result.ToList();
             
