@@ -72,9 +72,9 @@ namespace USEN.Games.Roulette
                             db.Insert(roulette);
                         }
                 });
-                
-                
-                timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+
+                timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 
                 return task.Result;
             }, TaskScheduler.FromCurrentSynchronizationContext());

@@ -37,13 +37,13 @@ namespace USEN.Games.Roulette
         [OnSerializing]
         internal void OnSerializingMethod(StreamingContext context)
         {
-            scolor = System.Drawing.Color.FromArgb((int)(color.r * 255), (int)(color.g * 255), (int)(color.b * 255));
+            scolor = System.Drawing.Color.FromArgb((int)(color.a * 255), (int)(color.r * 255), (int)(color.g * 255), (int)(color.b * 255));
         }
         
         [OnDeserialized]
         internal void OnDeserializedMethod(StreamingContext context)
         {
-            color = new Color(scolor.R / 255f, scolor.G / 255f, scolor.B / 255f);
+            color = new Color(scolor.R / 255f, scolor.G / 255f, scolor.B / 255f, scolor.A / 255f);
         }
     }
 }
