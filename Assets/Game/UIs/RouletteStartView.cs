@@ -2,8 +2,6 @@
 
 using System.Linq;
 using System.Threading.Tasks;
-using Cysharp.Threading.Tasks;
-using Luna;
 using Luna.UI;
 using Luna.UI.Audio;
 using Luna.UI.Navigation;
@@ -11,7 +9,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using USEN.Games.Common;
 
 namespace USEN.Games.Roulette
 {
@@ -66,17 +63,9 @@ namespace USEN.Games.Roulette
 
         public void OnStartButtonClicked()
         {
-            switch (RoulettePreferences.DisplayMode)
-            {
-                case RouletteDisplayMode.Normal:
-                    Navigator.Push<RouletteCategoryView>((view) => {
-                        view.Categories = _categories.categories;
-                    });
-                    break;
-                case RouletteDisplayMode.Random:
-                    PlayRandomGame();
-                    break;
-            }
+            Navigator.Push<RouletteCategoryView>((view) => {
+                view.Categories = _categories.categories;
+            });
         }
 
         public void PlayRandomGame()

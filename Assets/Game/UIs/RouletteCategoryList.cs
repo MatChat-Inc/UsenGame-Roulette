@@ -1,5 +1,6 @@
 using Luna.UI;
 using Luna.UI.Navigation;
+using Modules.UI.Misc;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,18 +11,26 @@ namespace USEN.Games.Roulette
     {
         protected override void OnCellClicked(int index, RouletteCategoryListCell listViewCell)
         {
-            Navigator.Push<RouletteGameSelectionView>((view) =>
+            switch (RoulettePreferences.DisplayMode)
             {
-                view.Category = SelectedData;
-            });
+                case RouletteDisplayMode.Normal:
+                    Navigator.Push<RouletteGameSelectionView>((view) =>
+                    {
+                        view.Category = SelectedData;
+                    });
+                    break;
+                case RouletteDisplayMode.Random:
+                    Navigator.Push<RouletteGameView>((view) =>
+                    {
+                        view.RouletteData = SelectedData.roulettes.GetRandomly();
+                    });
+                    break;
+            }
         }
         
         protected override void OnCellSubmitted(int index, RouletteCategoryListCell listViewCell)
         {
-            Navigator.Push<RouletteGameSelectionView>((view) =>
-            {
-                view.Category = SelectedData;
-            });
+            OnCellClicked(index, listViewCell);
         }
 
         protected override void OnCellDeselected(int index, RouletteCategoryListCell listViewCell)
