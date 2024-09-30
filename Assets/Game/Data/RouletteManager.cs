@@ -29,15 +29,14 @@ namespace USEN.Games.Roulette
                 Directory.CreateDirectory(databaseDirectory!);
 
             db = new SQLiteConnection(databasePath);
-            
-            Debug.Log($"[RouletteManager] Database path: {databasePath}");
-            
             var result = db.CreateTable<RouletteData>();
             
             Debug.Log($"[RouletteManager] Database create table: {result}");
             
             var all = db.Table<RouletteData>().ToList();
 
+            Debug.Log($"[RouletteManager] json {Resources.Load<TextAsset>("roulette").text}");
+            
             if (!db.Table<RouletteData>().Any())
             {
                 Debug.Log("[RouletteManager] Database is empty. Inserting default data.");
@@ -66,7 +65,7 @@ namespace USEN.Games.Roulette
             {
                 if (task.IsFaulted)
                 {
-                    Debug.LogError($"[RouletteManager] Sync error: {task.Exception}");
+                    Debug.LogWarning($"[RouletteManager] Sync failed. Use local data as fallback.");
                     return new RouletteCategories()
                     {
                         categories = GetCategories()
@@ -97,15 +96,26 @@ namespace USEN.Games.Roulette
             var data = db.Table<RouletteData>().ToList();
             var categories =
                 from roulette in data
-                group roulette by roulette.Category
-                into g
+                group roulette by roulette.Category into g
                 select new RouletteCategory
                 {
                     title = g.Key,
                     roulettes = g.ToList()
                 };
             
-            return categories.ToList();
+            var list = categories.ToList();
+            
+            // Add original category if not exists.
+            if (list.All(c => c.title != "オリジナル"))
+            {
+                list.Add(new RouletteCategory
+                {
+                    title = "オリジナル",
+                    roulettes = new List<RouletteData>()
+                });
+            }
+            
+            return list;
         }
         
         public RouletteCategory GetCategory(string title)
