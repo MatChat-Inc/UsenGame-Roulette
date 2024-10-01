@@ -169,7 +169,7 @@ namespace USEN.Games.Roulette
             
             // Calculate the target angle and duration
             var startAngle = transform.eulerAngles.z;
-            var endAngle = startAngle - startAngle % 360 + targetAngle + 720f;
+            var endAngle = startAngle - startAngle % 360 + targetAngle + 360f * 9;
             var endDuration = (endAngle - startAngle) / spinSpeed;
             var endTime = elapsedTime + endDuration * Mathf.PI / 2f;
 

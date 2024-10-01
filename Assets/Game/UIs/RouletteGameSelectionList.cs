@@ -1,15 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Cysharp.Threading.Tasks;
-using DG.Tweening;
-using Luna.Core.Pool;
-using Luna.UI;
 using Luna.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace USEN.Games.Roulette
 {

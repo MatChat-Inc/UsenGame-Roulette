@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Luna.Assets;
 using Luna.UI;
 using Luna.UI.Audio;
 using Luna.UI.Navigation;
@@ -194,6 +195,9 @@ namespace USEN.Games.Roulette
             // await UniTask.Delay((int)((rouletteWheel.spinDuration - 2) * 1000));
             // rouletteWheel.transform.parent.DOLocalMoveX(960, 1f).SetEase(Ease.InOutSine);
             // rouletteWheel.transform.parent.DOScale(3f, 1f).SetEase(Ease.InOutSine);
+            
+            // Play sfx
+            SFXManager.PlayRepeatedly(R.Audios.ルーレット回転音通常);
         }
         
         private async Task StopWheel()
@@ -207,6 +211,10 @@ namespace USEN.Games.Roulette
             // await UniTask.Delay(1000);
             rouletteWheel.transform.parent.DOLocalMoveX(960, 1f).SetEase(Ease.InOutSine);
             rouletteWheel.transform.parent.DOScale(3f, 1f).SetEase(Ease.InOutSine);
+            
+            // Stop sfx and play another sfx
+            SFXManager.Stop(R.Audios.ルーレット回転音通常);
+            SFXManager.Play(R.Audios.ルーレット回転音減速停止);
         }
 
         private void PopupConfirmView()
