@@ -507,7 +507,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cell: {fileID: 8489434640864021694}
   snapToCellWhenSelected: 1
-  selectFirstCellOnEnable: 1
+  selectFirstCellOnEnable: 0
   selectFirstCellOnReload: 1
   keepSelectionOnReload: 1
 --- !u!225 &8017552239261323009

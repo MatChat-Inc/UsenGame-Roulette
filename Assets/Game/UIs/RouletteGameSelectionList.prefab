@@ -31,7 +31,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8089509106791874343}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -109,7 +108,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 841060162257931003}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -147,8 +145,7 @@ MonoBehaviour:
   m_text: "\u30AA\u30EA\u30B8\u30CA\u30EB\u30B2\u30FC\u30E01\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cce7696552409b747a108f5e2a2e356f, type: 2}
-  m_sharedMaterial: {fileID: 7496854189285748973, guid: cc5b672e206ca15459dc9f749afb59b2,
-    type: 2}
+  m_sharedMaterial: {fileID: 7496854189285748973, guid: cc5b672e206ca15459dc9f749afb59b2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -188,15 +185,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -255,7 +254,6 @@ RectTransform:
   - {fileID: 841060162257931003}
   - {fileID: 8635701662029639534}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -467,10 +465,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a05e13bbc18406f4f81b43fd2e2d54cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: []
   cell: {fileID: 8165101139527528292}
   snapToCellWhenSelected: 1
-  selectFirstCellOnEnable: 1
+  selectFirstCellOnEnable: 0
   selectFirstCellOnReload: 1
   keepSelectionOnReload: 1
 --- !u!225 &951830863657339188
@@ -521,7 +518,6 @@ RectTransform:
   - {fileID: 6084105044712973836}
   - {fileID: 4597220566270743366}
   m_Father: {fileID: 8089509106791874343}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -644,8 +640,7 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: 54fa1c2ccc14fbd41bbfb4f1b773b1d7,
-      type: 3}
+    m_HighlightedSprite: {fileID: 21300000, guid: 54fa1c2ccc14fbd41bbfb4f1b773b1d7, type: 3}
     m_PressedSprite: {fileID: 21300000, guid: 54fa1c2ccc14fbd41bbfb4f1b773b1d7, type: 3}
     m_SelectedSprite: {fileID: 21300000, guid: 54fa1c2ccc14fbd41bbfb4f1b773b1d7, type: 3}
     m_DisabledSprite: {fileID: 0}
@@ -690,7 +685,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 841060162257931003}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}

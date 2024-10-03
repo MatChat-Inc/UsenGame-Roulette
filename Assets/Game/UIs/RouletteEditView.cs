@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Luna;
@@ -145,22 +146,20 @@ namespace USEN.Games.Roulette
         private KeyEventResult OnKeyEvent(KeyControl key, KeyEvent keyEvent)
         {
             // Debug.Log($"[RouletteEditView] Key pressed: {key.keyCode} with event: {keyEvent}");
-            // Debug.Log($"[RouletteEditView] Current selected: {EventSystem.current.currentSelectedGameObject}");
+            var cell = sectorListView.cells.First()?.gameObject;
+            Debug.Log($"[RouletteEditView] Current selected: {EventSystem.current.currentSelectedGameObject}");
             // Debug.Log($"[RouletteEditView] IsEditing: {IsEditing}");
             
-            if (keyEvent == KeyEvent.Down && (
-                EventSystem.current.currentSelectedGameObject == titleCell.gameObject ||
-                EventSystem.current.currentSelectedGameObject == sectorCounterButton.gameObject))
+            if (keyEvent == KeyEvent.Down)
             {
-                switch (key.keyCode)
-                {
-                    case Key.UpArrow:
-                        SFXManager.Play(R.Audios.ルーレット操作音選択);
-                        break;
-                    case Key.DownArrow:
-                        SFXManager.Play(R.Audios.ルーレット操作音選択);
-                        break;
-                }
+                if (key.keyCode == Key.UpArrow && (
+                    EventSystem.current.currentSelectedGameObject == sectorCounterButton.gameObject ||
+                    EventSystem.current.currentSelectedGameObject == sectorListView.cells.First()?.gameObject))
+                    SFXManager.Play(R.Audios.ルーレット操作音選択);
+                
+                if (key.keyCode == Key.DownArrow && 
+                    EventSystem.current.currentSelectedGameObject == titleCell.gameObject)
+                    SFXManager.Play(R.Audios.ルーレット操作音選択);
             }
             
             if (keyEvent == KeyEvent.Down)

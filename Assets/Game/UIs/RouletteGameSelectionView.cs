@@ -132,7 +132,8 @@ namespace USEN.Games.Roulette
         public async void OnBlueButtonClicked()
         {
             // Jump back to original category if not in original category
-            if (_editMode == EditMode.Readonly)
+            if (_editMode == EditMode.Readonly && 
+                Category.roulettes.Count > 0)
             {
                 var categoryView = Navigator.BackTo<RouletteCategoryView>();
                 categoryView?.GotoOriginalCategory(view => {
@@ -236,6 +237,8 @@ namespace USEN.Games.Roulette
             {
                 rouletteContentList.gameObject.SetActive(false);
                 rouletteGameSelectionList.gameObject.SetActive(true);
+                rouletteGameSelectionList.Select(rouletteGameSelectionList.SelectedIndex);
+                SFXManager.Stop();
                 SFXManager.Play(R.Audios.ルーレット操作音戻る);
             }
         }
