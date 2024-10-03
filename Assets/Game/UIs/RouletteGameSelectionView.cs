@@ -239,7 +239,7 @@ namespace USEN.Games.Roulette
                 rouletteGameSelectionList.gameObject.SetActive(true);
                 rouletteGameSelectionList.Select(rouletteGameSelectionList.SelectedIndex);
                 SFXManager.Stop();
-                SFXManager.Play(R.Audios.ルーレット操作音戻る);
+                SFXManager.Play(R.Audios.SfxRouletteBack);
             }
         }
         

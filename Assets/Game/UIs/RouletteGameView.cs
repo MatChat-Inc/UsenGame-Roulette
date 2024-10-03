@@ -183,7 +183,7 @@ namespace USEN.Games.Roulette
             if (startButton.gameObject.activeSelf)
             {
                 startButton.gameObject.SetActive(false);
-                SFXManager.Play(R.Audios.ルーレット操作音決定);
+                SFXManager.Play(R.Audios.SfxRouletteConfirm);
             }
 
             // Spin the wheel
@@ -196,7 +196,7 @@ namespace USEN.Games.Roulette
             // rouletteWheel.transform.parent.DOScale(3f, 1f).SetEase(Ease.InOutSine);
             
             // Play sfx
-            SFXManager.PlayRepeatedly(R.Audios.ルーレット回転音通常);
+            SFXManager.PlayRepeatedly(R.Audios.SfxRouletteGameRotating);
         }
         
         private async Task StopWheel()
@@ -215,8 +215,8 @@ namespace USEN.Games.Roulette
             rouletteWheel.transform.parent.DOScale(3f, 1f).SetEase(Ease.InOutSine);
             
             // Stop sfx and play another sfx
-            SFXManager.Stop(R.Audios.ルーレット回転音通常);
-            SFXManager.Play(R.Audios.ルーレット回転音減速停止);
+            SFXManager.Stop(R.Audios.SfxRouletteGameRotating);
+            SFXManager.Play(R.Audios.SfxRouletteGameDecelerating);
         }
 
         private void PopupConfirmView()

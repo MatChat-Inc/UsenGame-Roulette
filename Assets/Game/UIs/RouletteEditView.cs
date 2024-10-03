@@ -155,11 +155,11 @@ namespace USEN.Games.Roulette
                 if (key.keyCode == Key.UpArrow && (
                     EventSystem.current.currentSelectedGameObject == sectorCounterButton.gameObject ||
                     EventSystem.current.currentSelectedGameObject == sectorListView.cells.First()?.gameObject))
-                    SFXManager.Play(R.Audios.ルーレット操作音選択);
+                    SFXManager.Play(R.Audios.SfxRouletteSelect);
                 
                 if (key.keyCode == Key.DownArrow && 
                     EventSystem.current.currentSelectedGameObject == titleCell.gameObject)
-                    SFXManager.Play(R.Audios.ルーレット操作音選択);
+                    SFXManager.Play(R.Audios.SfxRouletteSelect);
             }
             
             if (keyEvent == KeyEvent.Down)

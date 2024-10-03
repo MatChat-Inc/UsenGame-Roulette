@@ -37,7 +37,7 @@ namespace USEN.Games.Roulette
             }, TaskScheduler.FromCurrentSynchronizationContext());
             
             Navigator.Instance.onPopped += (route) => {
-                SFXManager.Play(R.Audios.ルーレット操作音戻る);
+                SFXManager.Play(R.Audios.SfxRouletteBack);
             };
         }
 

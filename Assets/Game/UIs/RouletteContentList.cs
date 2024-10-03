@@ -10,13 +10,13 @@ namespace USEN.Games.Roulette
     {
         protected override void OnCellSubmitted(int index, RouletteContentListCell listViewCell)
         {
-            SFXManager.Play(R.Audios.ルーレット操作音決定);
+            SFXManager.Play(R.Audios.SfxRouletteConfirm);
         }
 
         protected override void OnCellSelected(int index, RouletteContentListCell listViewCell)
         {
             if (Initialized)
-                SFXManager.Play(R.Audios.ルーレット操作音選択);
+                SFXManager.Play(R.Audios.SfxRouletteSelect);
         }
     }
 }

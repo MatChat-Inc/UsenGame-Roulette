@@ -106,35 +106,35 @@ namespace USEN.Games.Common
         {
             if (!confirmButton.isActiveAndEnabled) return;
             onConfirmButtonClicked?.Invoke();
-            SFXManager.Play(R.Audios.ルーレット操作音決定);
+            SFXManager.Play(R.Audios.SfxRouletteConfirm);
         }
 
         private void OnRedButtonClicked()
         {
             if (!redButton.isActiveAndEnabled) return;
             onRedButtonClicked?.Invoke();
-            SFXManager.Play(R.Audios.ルーレット操作音決定);
+            SFXManager.Play(R.Audios.SfxRouletteConfirm);
         }
 
         private void OnBlueButtonClicked()
         {
             if (!blueButton.isActiveAndEnabled) return;
             onBlueButtonClicked?.Invoke();
-            SFXManager.Play(R.Audios.ルーレット操作音決定);
+            SFXManager.Play(R.Audios.SfxRouletteConfirm);
         }
 
         private void OnGreenButtonClicked()
         {
             if (!greenButton.isActiveAndEnabled) return;
             onGreenButtonClicked?.Invoke();
-            SFXManager.Play(R.Audios.ルーレット操作音決定);
+            SFXManager.Play(R.Audios.SfxRouletteConfirm);
         }
 
         private void OnYellowButtonClicked()
         {
             if (!yellowButton.isActiveAndEnabled) return;
             onYellowButtonClicked?.Invoke();
-            SFXManager.Play(R.Audios.ルーレット操作音決定);
+            SFXManager.Play(R.Audios.SfxRouletteConfirm);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace USEN.Games.Roulette
 
         protected override void OnCellSelected(int index, RouletteEditListCell listViewCell)
         {
-            SFXManager.Play(R.Audios.ルーレット操作音選択);
+            SFXManager.Play(R.Audios.SfxRouletteSelect);
         }
     }
 }
