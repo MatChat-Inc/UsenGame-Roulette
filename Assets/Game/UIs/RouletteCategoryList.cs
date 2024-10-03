@@ -17,16 +17,24 @@ namespace USEN.Games.Roulette
             switch (RoulettePreferences.DisplayMode)
             {
                 case RouletteDisplayMode.Normal:
-                    Navigator.Push<RouletteGameSelectionView>((view) =>
-                    {
+                    Navigator.Push<RouletteGameSelectionView>((view) => {
                         view.Category = SelectedData;
                     });
                     break;
                 case RouletteDisplayMode.Random:
-                    Navigator.Push<RouletteGameView>((view) =>
+                    if (SelectedData.roulettes.Count == 0)
                     {
-                        view.RouletteData = SelectedData.roulettes.GetRandomly();
-                    });
+                        Navigator.Push<RouletteGameSelectionView>((view) => {
+                            view.Category = SelectedData;
+                        });
+                    }
+                    else
+                    {
+                        Navigator.Push<RouletteGameView>((view) => {
+                            view.RouletteData = SelectedData.roulettes.GetRandomly();
+                        });
+                    }
+
                     break;
             }
         }
