@@ -29,6 +29,8 @@ namespace USEN.Games.Roulette
         public TextMeshProUGUI confirmText;
 
         private AsyncOperationHandle<AudioClip>? _audioClipHandle;
+        
+        private bool _isStopping = false;
 
         public RouletteData RouletteData
         {
@@ -90,6 +92,8 @@ namespace USEN.Games.Roulette
 
         private void OnDestroy()
         {
+            SFXManager.StopAll();
+            
             AssetUtils.Unload<CommendView>();
             if (_audioClipHandle != null)
                 Addressables.Release(_audioClipHandle.Value);
@@ -175,6 +179,8 @@ namespace USEN.Games.Roulette
             
             // Show yellow button
             bottomPanel.yellowButton.gameObject.SetActive(true);
+            
+            _isStopping = false;
         }
 
         private async Task SpinWheel()
@@ -204,6 +210,9 @@ namespace USEN.Games.Roulette
         private async Task StopWheel()
         {
             Debug.Log("Stop button clicked.");
+            
+            if (_isStopping) return;
+            _isStopping = true;
 
             // Stop the wheel
             rouletteWheel.StopSpin();
