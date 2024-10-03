@@ -134,28 +134,20 @@ namespace USEN.Games.Roulette
             PopupConfirmView();
         }
 
-        private void OnBlueButtonClicked()
+        private async void OnBlueButtonClicked()
         {
             Navigator.Pop();
             
-            if (Navigator.Instance.TopWidget is not RouletteGameSelectionView)
+            if (Navigator.Instance.TopWidget is RouletteCategoryView categoryView)
             {
-                Navigator.Push<RouletteCategoryView>(async view => {
-                    await UniTask.NextFrame();
-                    view.GotoRandomCategory();
-                });
+                await UniTask.NextFrame();
+                categoryView.GotoRandomCategory();
             }
         }
 
         private void OnRedButtonClicked()
         {
-            Navigator.Pop();
-            Navigator.Pop();
-            
-            if (Navigator.Instance.TopWidget is not RouletteGameSelectionView)
-            {
-                Navigator.Push<RouletteCategoryView>();
-            }
+            Navigator.PopUntil<RouletteCategoryView>();
         }
 
         private async void OnYellowButtonClicked()
