@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Luna;
 using Luna.UI;
 using Luna.UI.Navigation;
 using TMPro;
@@ -235,7 +236,7 @@ namespace USEN.Games.Roulette
             {
                 rouletteContentList.gameObject.SetActive(false);
                 rouletteGameSelectionList.gameObject.SetActive(true);
-                rouletteGameSelectionList.Select(rouletteGameSelectionList.SelectedIndex);
+                SFXManager.Play(R.Audios.ルーレット操作音戻る);
             }
         }
         

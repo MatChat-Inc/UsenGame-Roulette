@@ -1,12 +1,10 @@
 // Created by LunarEclipse on 2024-6-30 18:50.
 
-using System;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Luna.Assets;
+using Luna;
 using Luna.UI;
-using Luna.UI.Audio;
 using Luna.UI.Navigation;
 using TMPro;
 using UnityEngine;
@@ -72,7 +70,6 @@ namespace USEN.Games.Roulette
 
         private void Start()
         {
-            EventSystem.current.SetSelectedGameObject(startButton.gameObject);
             AssetUtils.LoadAsync<CommendView>().ContinueWith(task =>
             {
                 var go = task.Result;
@@ -185,7 +182,11 @@ namespace USEN.Games.Roulette
             Debug.Log("Start button clicked.");
 
             // Hide buttons
-            startButton.gameObject.SetActive(false);
+            if (startButton.gameObject.activeSelf)
+            {
+                startButton.gameObject.SetActive(false);
+                SFXManager.Play(R.Audios.ルーレット操作音決定);
+            }
 
             // Spin the wheel
             // rouletteWheel.SpinWheel();

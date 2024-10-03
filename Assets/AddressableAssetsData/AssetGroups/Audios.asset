@@ -63,12 +63,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Audio
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: dc8122d2087679946b35197bffffb6a7
-    m_Address: "Assets/Game/Audios/\u30EB\u30FC\u30EC\u30C3\u30C8\u56DE\u8EE2\u97F3.mp3"
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Audio
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dffaf73c2e467db468919b7a40911146
     m_Address: "Assets/Common/Commend/Audios/\u898B\u3088\u3001\u52C7\u8005\u306F\u5E30\u308B.mp3"
     m_ReadOnly: 0

@@ -2,8 +2,8 @@
 
 using System.Linq;
 using System.Threading.Tasks;
+using Luna;
 using Luna.UI;
-using Luna.UI.Audio;
 using Luna.UI.Navigation;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -24,10 +24,7 @@ namespace USEN.Games.Roulette
         
         private void Start()
         {
-            EventSystem.current.SetSelectedGameObject(startButton.gameObject);
             BgmManager.Play(bgmClip);
-            
-            startButton.interactable = false;
             
             // Preload all roulette widgets
             // Widget.Load(GetType().Namespace);
@@ -35,9 +32,13 @@ namespace USEN.Games.Roulette
             // Load the roulette data
             RouletteManager.Instance.Sync().ContinueWith(async task => {
                 _categories = task.Result;
-                startButton.interactable = true;
                 EventSystem.current.SetSelectedGameObject(startButton.gameObject);
+                startButton.interactable = true;
             }, TaskScheduler.FromCurrentSynchronizationContext());
+            
+            Navigator.Instance.onPopped += (route) => {
+                SFXManager.Play(R.Audios.ルーレット操作音戻る);
+            };
         }
 
         private void Update()

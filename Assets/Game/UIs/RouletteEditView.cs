@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using Luna;
 using Luna.UI;
 using Luna.UI.Navigation;
 using TMPro;
@@ -105,12 +106,12 @@ namespace USEN.Games.Roulette
         private void OnEnable()
         {
             EventSystem.current.SetSelectedGameObject(titleCell.gameObject);
-            base.OnKey += OnKey;
+            base.OnKey += OnKeyEvent;
         }
 
         private void OnDisable()
         {
-            base.OnKey -= OnKey;
+            base.OnKey -= OnKeyEvent;
         }
 
         private async void Start()
@@ -123,8 +124,6 @@ namespace USEN.Games.Roulette
         
         private void Update()
         {
-            // Debug.Log($"[RouletteEditView] Update: {IsEditing}");
-            
             if (Input.GetKeyDown(KeyCode.Escape) ||
                 Input.GetButtonDown("Cancel")) {
                 if (!_isEditing) Navigator.Pop();
@@ -143,28 +142,27 @@ namespace USEN.Games.Roulette
             else bottomPanel.yellowButton.gameObject.SetActive(false);
         }
 
-        private KeyEventResult OnKey(KeyControl key, KeyEvent keyEvent)
+        private KeyEventResult OnKeyEvent(KeyControl key, KeyEvent keyEvent)
         {
             // Debug.Log($"[RouletteEditView] Key pressed: {key.keyCode} with event: {keyEvent}");
             // Debug.Log($"[RouletteEditView] Current selected: {EventSystem.current.currentSelectedGameObject}");
+            // Debug.Log($"[RouletteEditView] IsEditing: {IsEditing}");
             
-            // if (keyEvent == KeyEvent.KeyDown &&
-            //     EventSystem.current.currentSelectedGameObject == sectorCounterButton.gameObject)
-            // {
-            //     switch (key.keyCode)
-            //     {
-            //         case Key.RightArrow:
-            //             AddSector();
-            //             break;
-            //         case Key.LeftArrow:
-            //             RemoveSector();
-            //             break;
-            //     }
-            // }
-            // if (!IsEditing) Navigator.Pop();
+            if (keyEvent == KeyEvent.Down && (
+                EventSystem.current.currentSelectedGameObject == titleCell.gameObject ||
+                EventSystem.current.currentSelectedGameObject == sectorCounterButton.gameObject))
+            {
+                switch (key.keyCode)
+                {
+                    case Key.UpArrow:
+                        SFXManager.Play(R.Audios.ルーレット操作音選択);
+                        break;
+                    case Key.DownArrow:
+                        SFXManager.Play(R.Audios.ルーレット操作音選択);
+                        break;
+                }
+            }
             
-            
-            // Debug.Log($"[RouletteEditView] Key pressed: {IsEditing} with event: {keyEvent}");
             if (keyEvent == KeyEvent.Down)
             {
                 _isEditing = EventSystem.current.currentSelectedGameObject?.GetComponent<TMP_InputField>()?.isFocused ?? false;

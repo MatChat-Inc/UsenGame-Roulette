@@ -1,3 +1,4 @@
+using Luna;
 using Luna.UI;
 using Luna.UI.Navigation;
 using Modules.UI.Misc;
@@ -11,6 +12,8 @@ namespace USEN.Games.Roulette
     {
         protected override void OnCellClicked(int index, RouletteCategoryListCell listViewCell)
         {
+            SFXManager.Play(R.Audios.ルーレット操作音決定);
+            
             switch (RoulettePreferences.DisplayMode)
             {
                 case RouletteDisplayMode.Normal:
@@ -41,6 +44,9 @@ namespace USEN.Games.Roulette
         protected override void OnCellSelected(int index, RouletteCategoryListCell listViewCell)
         {
             listViewCell.text.color = Color.black;
+            
+            if (Initialized)
+                SFXManager.Play(R.Audios.ルーレット操作音選択);
         }
     }
 

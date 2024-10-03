@@ -22,8 +22,6 @@ namespace USEN.Games.Roulette
 
         void Start()
         {
-            listView.FocusOnCell(0);
-            
             if (Categories.IsNullOrEmpty())
             {
                 RouletteManager.Instance.Sync().ContinueWith(task =>
