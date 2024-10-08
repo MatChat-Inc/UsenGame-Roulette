@@ -28,9 +28,6 @@ namespace USEN.Games.Roulette
         
         public List<RouletteSector> sectors = new();
         
-
-
-
         public RouletteData()
         {
             // ID = Guid.NewGuid().ToString();

@@ -40,7 +40,7 @@ namespace USEN.Games.Roulette
                 {
                     _editMode = EditMode.Editable;
                     bottomPanel.redButton.gameObject.SetActive(true);
-                    bottomPanel.yellowButton.gameObject.SetActive(true);
+                    CheckRoulette();
                 }
                 else
                 {
@@ -51,7 +51,7 @@ namespace USEN.Games.Roulette
 
                 titleText.text = value.title;
 
-                CheckRouletteVisibility();
+                CheckRoulette();
             }
         }
         
@@ -59,7 +59,7 @@ namespace USEN.Games.Roulette
         
         private bool IsOriginal => Category.title == "オリジナル";
 
-        async void Awake()
+        private void Awake()
         {
             rouletteGameSelectionList.onCellSelected += (index, cell) => rouletteWheel.RouletteData = cell.Data;
             rouletteGameSelectionList.onCellSubmitted += (index, cell) => OnConfirmButtonClicked();
@@ -82,6 +82,11 @@ namespace USEN.Games.Roulette
             bottomPanel.onRedButtonClicked += OnRedButtonClicked;
             bottomPanel.onBlueButtonClicked += OnBlueButtonClicked;
             bottomPanel.onYellowButtonClicked += OnYellowButtonClicked;
+
+            if (_manager.IsDirty)
+            {
+                Category = _manager.GetCategory(Category.title);
+            }
         }
 
         private void OnDisable()
@@ -98,7 +103,7 @@ namespace USEN.Games.Roulette
                 OnExitButtonClicked();
             }
             
-            CheckRouletteVisibility();
+            CheckRoulette();
         }
         
         public void OnConfirmButtonClicked()
@@ -149,17 +154,16 @@ namespace USEN.Games.Roulette
             // Add to category and save
             if (result != null)
             {
+                result.Category = "オリジナル";
+                
                 if (IsOriginal)
                 {
                     Category.roulettes[rouletteGameSelectionList.SelectedIndex] = result;
                     rouletteWheel.RouletteData = result;
                     rouletteGameSelectionList.Reload();
+                    _manager.UpdateRoulette(result);
                 }
-                else
-                {
-                    result.Category = "オリジナル";
-                    _manager.AddRoulette(result);
-                }
+                else _manager.AddRoulette(result);
                 
                 _manager.Sync();
             }
@@ -197,31 +201,37 @@ namespace USEN.Games.Roulette
                     rouletteGameSelectionList.Select(Category.roulettes.Count - 1);
                     rouletteWheel.RouletteData = result;
                 }
-                else
-                {
-                    result.Category = "オリジナル";
-                    _manager.AddRoulette(result);
-                }
                 
+                result.Category = "オリジナル";
+                
+                _manager.AddRoulette(result);
                 _manager?.Sync();
             }
+            
+            CheckRoulette();
         }
         
         public void OnYellowButtonClicked()
         {
-            if (rouletteGameSelectionList.gameObject.activeSelf && 
+            if (rouletteGameSelectionList.gameObject.activeSelf &&
                 rouletteGameSelectionList.Data.Count > 0)
+            {
+                _manager.DeleteRoulette(rouletteGameSelectionList.SelectedData);
                 rouletteGameSelectionList.Remove(rouletteGameSelectionList.SelectedIndex);
-                
-            if (rouletteContentList.gameObject.activeSelf && 
+            }
+
+            if (rouletteContentList.gameObject.activeSelf &&
                 rouletteContentList.Data.Count > 2)
+            {
                 rouletteContentList.Remove(rouletteContentList.SelectedIndex);
+                _manager.UpdateRoulette(rouletteGameSelectionList.SelectedData);
+            }
             
             if (rouletteGameSelectionList.Data.Count > 0)
                 rouletteWheel.RouletteData = rouletteGameSelectionList.SelectedData;
             else rouletteWheel.RouletteData = null;
-            
-            _manager?.Sync();
+
+            CheckRoulette();
         }
         
         private void ShowContentView()
@@ -243,9 +253,19 @@ namespace USEN.Games.Roulette
             }
         }
         
-        private void CheckRouletteVisibility()
+        private void CheckRoulette()
         {
-            RouletteGameObject.SetActive(rouletteGameSelectionList.Data.Count > 0);
+            var hasRoulette = Category.roulettes.Count > 0;
+            
+            RouletteGameObject.SetActive(hasRoulette);
+            
+            bottomPanel.blueButton.gameObject.SetActive(hasRoulette);
+            bottomPanel.yellowButton.gameObject.SetActive(hasRoulette);
+        }
+        
+        private void ReloadCategory()
+        {
+            Category = _manager.GetCategory(Category.title);
         }
         
         private enum EditMode

@@ -15,9 +15,9 @@ namespace USEN.Games.Roulette
     {
         public static RouletteManager Instance { get; } = new();
         
+        public bool IsDirty { get; private set; }
+        
         public readonly SQLiteConnection db;
-
-        private long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         
         private RouletteManager(string databaseName = null)
         {
@@ -83,9 +83,8 @@ namespace USEN.Games.Roulette
                             db.Insert(roulette);
                         }
                 });
-
-
-                timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                
+                IsDirty = false;
                 
                 return task.Result;
             }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -151,6 +150,7 @@ namespace USEN.Games.Roulette
         public void AddRoulette(RouletteData roulette)
         {
             db.Insert(roulette);
+            IsDirty = true;
         }
         
         public void InsertFromJsonList(string json)
@@ -163,6 +163,26 @@ namespace USEN.Games.Roulette
                 foreach (var question in questions)
                     db.Insert(question);
             });
+            
+            IsDirty = true;
+        }
+        
+        public void UpdateRoulette(RouletteData roulette)
+        {
+            db.Update(roulette);
+            IsDirty = true;
+        }
+        
+        public void DeleteRoulette(RouletteData roulette)
+        {
+            db.Delete(roulette);
+            IsDirty = true;
+        }
+        
+        public void DeleteAll()
+        {
+            db.DeleteAll<RouletteData>();
+            IsDirty = true;
         }
     }
 }

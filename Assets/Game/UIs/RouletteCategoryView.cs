@@ -32,6 +32,15 @@ namespace USEN.Games.Roulette
             }
         }
 
+        private void OnEnable()
+        {
+            if (RouletteManager.Instance.IsDirty)
+            {
+                Categories = RouletteManager.Instance.GetCategories();
+                listView.FocusOnCell(0);
+            }
+        }
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape) ||
@@ -39,7 +48,6 @@ namespace USEN.Games.Roulette
                 Navigator.Pop();
             }
         }
-
         public void GotoRandomCategory(Action<RouletteGameSelectionView> callback = null)
         {
             var randomIndex = Random.Range(0, Categories.Count);
