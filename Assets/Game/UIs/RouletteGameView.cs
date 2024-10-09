@@ -15,7 +15,6 @@ using UnityEngine.InputSystem.Controls;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using USEN.Assets;
 using USEN.Games.Common;
 
 namespace USEN.Games.Roulette

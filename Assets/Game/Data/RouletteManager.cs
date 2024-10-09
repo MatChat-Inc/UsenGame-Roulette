@@ -29,20 +29,14 @@ namespace USEN.Games.Roulette
                 Directory.CreateDirectory(databaseDirectory!);
 
             db = new SQLiteConnection(databasePath);
-            var result = db.CreateTable<RouletteData>();
-            
-            Debug.Log($"[RouletteManager] Database create table: {result}");
-            
-            var all = db.Table<RouletteData>().ToList();
-
-            Debug.Log($"[RouletteManager] json {Resources.Load<TextAsset>("roulette").text}");
+            db.CreateTable<RouletteData>();
             
             if (!db.Table<RouletteData>().Any())
             {
-                Debug.Log("[RouletteManager] Database is empty. Inserting default data.");
-                
                 var json = Resources.Load<TextAsset>("roulette").text;
-
+                
+                Debug.Log($"[RouletteManager] Database is empty. Inserting default data: \n{json}");
+                
                 var categories = JsonConvert.DeserializeObject<RouletteCategories>(json);
                 
                 Debug.Log($"[RouletteManager] Inserting {categories.categories.Sum(c => c.roulettes.Count)} roulettes.");

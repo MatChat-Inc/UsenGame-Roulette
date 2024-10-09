@@ -12,7 +12,7 @@ namespace USEN.Games.Roulette
         public override void WriteJson(JsonWriter writer, Color value, JsonSerializer serializer)
         {
             // Serialize the color as a hex string (e.g., #FF0000 for red)
-            string hexColor = $"#{value.R:X2}{value.G:X2}{value.B:X2}";
+            string hexColor = $"#{value.A:X2}{value.R:X2}{value.G:X2}{value.B:X2}";
             writer.WriteValue(hexColor);
         }
 
@@ -45,6 +45,36 @@ namespace USEN.Games.Roulette
             }
 
             throw new Exception("Invalid hex color format.");
+        }
+    }
+
+    public class ColorArgbConverter : JsonConverter<Color>
+    {
+        public override void WriteJson(JsonWriter writer, Color value, JsonSerializer serializer)
+        {
+            // Serialize the color as a argb string (e.g., "255,255,255,255" for white)
+            string argbColor = $"{value.A},{value.R},{value.G},{value.B}";
+            writer.WriteValue(argbColor);
+        }
+
+        public override Color ReadJson(JsonReader reader, Type objectType, Color existingValue, bool hasExistingValue, JsonSerializer serializer)
+        {
+            // Read the argb string and convert it back to a Color object
+            string argbColor = (string)reader.Value;
+            argbColor = argbColor.Replace(" ", "");
+
+            // Parse the argb string into ARGB components
+            string[] components = argbColor.Split(',');
+            if (components.Length == 4)
+            {
+                byte a = byte.Parse(components[0]);
+                byte r = byte.Parse(components[1]);
+                byte g = byte.Parse(components[2]);
+                byte b = byte.Parse(components[3]);
+                return Color.FromArgb(a, r, g, b);
+            }
+
+            throw new Exception("Invalid argb color format.");
         }
     }
 }
