@@ -26,23 +26,23 @@ namespace USEN.Games.Roulette
         {
             BgmManager.Play(bgmClip);
             
-            // Preload all roulette widgets
-            Assets.Load<Object>(GetType().Namespace, "Audio");
-            
-            // Load the roulette data
-            RouletteManager.Instance.Sync().ContinueWith(async task => {
-                _categories = task.Result;
-                EventSystem.current.SetSelectedGameObject(startButton.gameObject);
-                startButton.interactable = true;
-            }, TaskScheduler.FromCurrentSynchronizationContext());
-            
-            Navigator.Instance.onPopped += (route) => {
-                SFXManager.Play(R.Audios.SfxRouletteBack);
-            };
-
-#if UNITY_ANDROID
-            Debug.Log($"TV: {USEN.AndroidPreferences.TVIdentifier}");      
-#endif
+//             // Preload all roulette widgets
+//             Assets.Load<Object>(GetType().Namespace, "Audio");
+//             
+//             // Load the roulette data
+//             RouletteManager.Instance.Sync().ContinueWith(async task => {
+//                 _categories = task.Result;
+//                 EventSystem.current.SetSelectedGameObject(startButton.gameObject);
+//                 startButton.interactable = true;
+//             }, TaskScheduler.FromCurrentSynchronizationContext());
+//             
+//             Navigator.Instance.onPopped += (route) => {
+//                 SFXManager.Play(R.Audios.SfxRouletteBack);
+//             };
+//
+// #if UNITY_ANDROID
+//             Debug.Log($"TV: {USEN.AndroidPreferences.TVIdentifier}");      
+// #endif
         }
 
         private void Update()
