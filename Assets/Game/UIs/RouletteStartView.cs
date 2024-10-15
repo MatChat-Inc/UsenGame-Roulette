@@ -27,7 +27,7 @@ namespace USEN.Games.Roulette
             BgmManager.Play(bgmClip);
             
             // Preload all roulette widgets
-            Widget.Load(GetType().Namespace);
+            Assets.Load<Object>(GetType().Namespace, "Audio");
             
             // Load the roulette data
             RouletteManager.Instance.Sync().ContinueWith(async task => {
