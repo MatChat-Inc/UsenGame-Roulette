@@ -39,6 +39,10 @@ namespace USEN.Games.Roulette
             Navigator.Instance.onPopped += (route) => {
                 SFXManager.Play(R.Audios.SfxRouletteBack);
             };
+
+#if UNITY_ANDROID
+            Debug.Log($"TV: {USEN.AndroidPreferences.TVIdentifier}");      
+#endif
         }
 
         private void Update()
@@ -47,11 +51,22 @@ namespace USEN.Games.Roulette
                 Input.GetButtonDown("Cancel")) {
                 OnExitButtonClicked();
             }
-
-            if (Input.GetKeyDown(KeyCode.A))
+#if UNITY_ANDROID
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                BgmManager.Play(bgmClip);
+                AndroidPreferences.Toast("Hello, Kotlin!");
             }
+            
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                Luna.Android.ShowToast("Hello, Android!");
+            }
+            
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                Luna.Android.ShowToast(USEN.AndroidPreferences.TVIdentifier);
+            }
+#endif
         }
 
         private void OnDestroy()
