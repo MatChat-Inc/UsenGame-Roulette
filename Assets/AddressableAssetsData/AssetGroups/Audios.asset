@@ -15,11 +15,11 @@ MonoBehaviour:
   m_GroupName: Audios
   m_Data:
     m_SerializedData: []
-  m_GUID: 32b901098fb976a43b5747b0fefca8af
+  m_GUID: 2e1af24ef737b6b409a5cfc6b40dab5c
   m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 19ecc521cb0da484a839d120332326fe, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 99783138a25505543a2b7110ff0ec8aa, type: 2}
     - {fileID: 11400000, guid: 734bc146b5f5b5a4b91deebc0f6b5b4e, type: 2}
+    - {fileID: 11400000, guid: 99783138a25505543a2b7110ff0ec8aa, type: 2}
