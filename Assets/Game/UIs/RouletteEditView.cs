@@ -138,9 +138,9 @@ namespace USEN.Games.Roulette
                     RemoveSector();
             }
             
-            if(sectorListView.Selected)
-                bottomPanel.yellowButton.gameObject.SetActive(true);
-            else bottomPanel.yellowButton.gameObject.SetActive(false);
+            // if(sectorListView.Selected)
+            //     bottomPanel.yellowButton.gameObject.SetActive(true);
+            // else bottomPanel.yellowButton.gameObject.SetActive(false);
         }
 
         private KeyEventResult OnKeyEvent(KeyControl key, KeyEvent keyEvent)

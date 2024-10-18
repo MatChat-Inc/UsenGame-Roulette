@@ -35,12 +35,13 @@ namespace USEN.Games.Roulette
             {
                 _category = value;
                 rouletteGameSelectionList.Data = value.roulettes;
+                
+                CheckRoulette();
 
                 if (value.title == "オリジナル")
                 {
                     _editMode = EditMode.Editable;
                     bottomPanel.redButton.gameObject.SetActive(true);
-                    CheckRoulette();
                 }
                 else
                 {
@@ -50,8 +51,6 @@ namespace USEN.Games.Roulette
                 }
 
                 titleText.text = value.title;
-
-                CheckRoulette();
             }
         }
         
@@ -265,9 +264,12 @@ namespace USEN.Games.Roulette
             var hasRoulette = Category.roulettes.Count > 0;
             
             RouletteGameObject.SetActive(hasRoulette);
-            
-            bottomPanel.blueButton.gameObject.SetActive(hasRoulette);
-            bottomPanel.yellowButton.gameObject.SetActive(hasRoulette);
+
+            if (Category.title == "オリジナル")
+            {
+                bottomPanel.blueButton.gameObject.SetActive(hasRoulette);
+                bottomPanel.yellowButton.gameObject.SetActive(hasRoulette);
+            }
         }
         
         private void ReloadCategory()
