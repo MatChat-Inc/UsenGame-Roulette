@@ -181,7 +181,6 @@ namespace USEN.Games.Roulette
                 {
                     content = $"",
                     weight = 1,
-                    color = Color.HSVToRGB(1.0f / 8 * i, 0.5f, 1f),
                 });
             }
             
@@ -193,6 +192,14 @@ namespace USEN.Games.Roulette
             // Add to category and save
             if (result != null)
             {
+                // Set color for each sector
+                for (int i = 0; i < result.sectors.Count; i++)
+                {
+                    var sector = result.sectors[i];
+                    sector.id = i;
+                    sector.color = RouletteData.GetSectorColor(i, result.sectors.Count);
+                }
+                
                 if (IsOriginal)
                 {
                     Category.roulettes.Add(result);

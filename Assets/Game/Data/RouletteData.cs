@@ -49,12 +49,18 @@ namespace USEN.Games.Roulette
             {
                 var sector = sectors[i];
                 sector.id = sectors.IndexOf(sector);
-                var color = Color.HSVToRGB(Mathf.Pow((1.0f / sectors.Count * i - 0.02f).Mod(1), 1.35f), 1f, 1f);
-                sector.color = color
-                    .WithSaturation(0.85f * (1f - sector.color.g * 0.2f))
-                    .WithBrightness(Mathf.Clamp(1.4f * (1f - sector.color.b * 0.5f) * (1f - sector.color.g * 0.3f), 0, 1))
-                    .WithAlpha(0.75f * (1f - sector.color.b * 0.1f));
+                sector.color = GetSectorColor(sector.id, sectors.Count);
             }
+        }
+        
+        public static Color GetSectorColor(int index, int count)
+        {
+            var color = Color.HSVToRGB(Mathf.Pow((1.0f / count * index - 0.02f).Mod(1), 1.35f), 1f, 1f);
+            color = color
+                .WithSaturation(0.85f * (1f - color.g * 0.2f))
+                .WithBrightness(Mathf.Clamp(1.4f * (1f - color.b * 0.5f) * (1f - color.g * 0.3f), 0, 1))
+                .WithAlpha(0.75f * (1f - color.b * 0.1f));
+            return color;
         }
     }
 }
