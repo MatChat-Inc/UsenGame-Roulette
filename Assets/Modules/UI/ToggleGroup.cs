@@ -10,6 +10,16 @@ namespace Modules.UI
     public class ToggleGroup: UnityEngine.UI.ToggleGroup
     {
         public List<Toggle> Toggles => base.m_Toggles;
+
+        [field: Header("Binding")]
+        public Slider slider;
+        
+        protected override void Start()
+        {
+            base.Start();
+            if (slider != null)
+                Bind(slider);
+        }
         
         public void Add(Toggle toggle)
         {

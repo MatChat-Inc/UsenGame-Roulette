@@ -29,6 +29,10 @@ namespace USEN.Games.Roulette
             // Preload all roulette widgets
             Assets.Load<Object>(GetType().Namespace, "Audio");
             
+            // Audio volume
+            BgmManager.Volume = RoulettePreferences.BgmVolume;
+            SFXManager.Volume = RoulettePreferences.SfxVolume;
+            
             // Load the roulette data
             RouletteManager.Instance.Sync().ContinueWith(async task => {
                 _categories = task.Result;
