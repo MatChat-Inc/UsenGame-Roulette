@@ -3,33 +3,164 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Luna;
 using Newtonsoft.Json;
+using UnityEngine;
+using USEN.Games.Roulette;
 
-namespace Usen.Network
+namespace Usen
 {
     public class Request
     {
-        private static readonly HttpClient _client = new()
+        public static HttpClient Client { get; }
+
+        static Request()
         {
-            BaseAddress = new Uri("http://127.0.0.1:8787/"),
-            DefaultRequestHeaders = {
-                Accept = { new("application/json") },
-                Authorization = new("Bearer", "test"),
-            },
-        };
+            Client = new()
+            {
+                BaseAddress = new Uri("https://api-stg.tvsignage.usen.com/"),
+                // BaseAddress = new Uri("https://api.tvsignage.usen.com/"),
+                DefaultRequestHeaders = {
+                    Accept = { new("application/json") },
+                    Authorization = new("750900428"),
+                },
+            };
+            
+            Client.DefaultRequestHeaders.Add("x-umid", "01HA1S5FCXKDB78KGBZ0QP3HYQ");
+            Client.DefaultRequestHeaders.Add("neosContractCd", "N00000000000000065760");
+        }
         
-        public static Task<T> Get<T>(string path)
+        public static Task<T> Get<T>(string path) where T : class
         {
-            var response = _client.GetAsync(path);
+            var response = Client.GetAsync(path);
             return response.ContinueWith(task =>
             {
                 var result = task.Result;
+                var content = result.Content.ReadAsStringAsync();
                 if (result.IsSuccessStatusCode)
-                {
-                    var content = result.Content.ReadAsStringAsync();
                     return content.ContinueWith(task => JsonConvert.DeserializeObject<T>(task.Result)).Result;
+                
+                content.ContinueWith(task => {
+                    var response = JsonConvert.DeserializeObject<Response>(task.Result);
+                    Debug.LogError($"Request {path} failed: {result.StatusCode} {response.message}");
+#if UNITY_ANDROID
+                    Android.ShowToast(response.message);
+#endif
+                });
+
+                return null;
+            });
+        }
+        
+        public static Task<Response> Post(string path, object data)
+        {
+            var json = JsonConvert.SerializeObject(data, new IgnoreJsonProperties("id"));
+            var content = new StringContent(json);
+            content.Headers.ContentType = new("application/json");
+            
+            var postTask = Client.PostAsync(path, content);
+            return postTask.ContinueWith(task =>
+            {
+                var content = task.Result.Content.ReadAsStringAsync();
+                var response = content.ContinueWith(task => {
+                    return JsonConvert.DeserializeObject<Response>(task.Result);
+                }).Result;
+
+                if (!task.Result.IsSuccessStatusCode)
+                {
+                    Debug.LogError($"Request {path} failed: {response.code} {response.message}");
+#if UNITY_ANDROID
+                    Android.ShowToast(response.message);
+#endif
                 }
-                else throw new Exception($"Request {path} failed: {result.StatusCode} {result.ReasonPhrase}");
+
+                return response;
+            });
+        }
+        
+        public static Task<T> Post<T>(string path, object data)
+        {
+            var json = JsonConvert.SerializeObject(data, new IgnoreJsonProperties("id"));
+            var content = new StringContent(json);
+            content.Headers.ContentType = new("application/json");
+            
+            var postTask = Client.PostAsync(path, content);
+            return postTask.ContinueWith(task =>
+            {
+                var content = task.Result.Content.ReadAsStringAsync();
+                return content.ContinueWith(task => {
+                    return JsonConvert.DeserializeObject<T>(task.Result);
+                }).Result;
+            });
+        }
+        
+        public static Task<Response> Put(string path, object data)
+        {
+            var json = JsonConvert.SerializeObject(data, new IgnoreJsonProperties("id"));
+            var content = new StringContent(json);
+            content.Headers.ContentType = new("application/json");
+            
+            var response = Client.PutAsync(path, content);
+            return response.ContinueWith(task =>
+            {
+                var content = task.Result.Content.ReadAsStringAsync();
+                var response = content.ContinueWith(task => JsonConvert.DeserializeObject<Response>(task.Result)).Result;
+                
+                if (!task.Result.IsSuccessStatusCode)
+                {
+                    Debug.LogError($"Request {path} failed: {task.Result.StatusCode} {response.message}");
+#if UNITY_ANDROID
+                    Android.ShowToast(response.message);
+#endif
+                }
+                
+                return response;
+            });
+        }
+        
+        public static Task<T> Put<T>(string path, object data)
+        {
+            var json = JsonConvert.SerializeObject(data, new IgnoreJsonProperties("id"));
+            var content = new StringContent(json);
+            content.Headers.ContentType = new("application/json");
+            
+            var response = Client.PutAsync(path, content);
+            return response.ContinueWith(task =>
+            {
+                var result = task.Result;
+                var content = result.Content.ReadAsStringAsync();
+                return content.ContinueWith(task => JsonConvert.DeserializeObject<T>(task.Result)).Result;
+            });
+        }
+        
+        public static Task<Response> Delete(string path)
+        {
+            var response = Client.DeleteAsync(path);
+            return response.ContinueWith(task =>
+            {
+                var content = task.Result.Content.ReadAsStringAsync();
+                var response = content.ContinueWith(task => JsonConvert.DeserializeObject<Response>(task.Result)).Result;
+                
+                if (!task.Result.IsSuccessStatusCode)
+                {
+                    Debug.LogError($"Request {path} failed: {task.Result.StatusCode} {response.message}");
+#if UNITY_ANDROID
+                    Android.ShowToast(response.message);
+#endif
+                }
+                
+                return response;
+            });
+        }
+        
+        public static Task<T> Delete<T>(string path)
+        {
+            var response = Client.DeleteAsync(path);
+            return response.ContinueWith(task =>
+            {
+                var result = task.Result;
+                var content = result.Content.ReadAsStringAsync();
+                return content.ContinueWith(task => JsonConvert.DeserializeObject<T>(task.Result)).Result;
             });
         }
     }

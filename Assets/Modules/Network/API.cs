@@ -3,23 +3,34 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using USEN.Games.Roulette;
-using Usen.Network;
 
 namespace Usen
 {
     public partial class API
     {
-        // Get roulette data with http request.
-        public static Task<RouletteCategories> GetRoulettes()
+        public static Task<RouletteCategories> GetRouletteCategories()
         {
-            return Request.Get<RouletteCategories>("get/roulettes");
+            return Request.Get<RouletteCategories>("roulette/categories");
         }
         
         public static Task<RouletteCategory> GetRouletteCategory(string category)
         {
-            return Request.Get<RouletteCategory>($"get/roulette/categories/{category}");
+            return Request.Get<RouletteCategory>($"/roulette/categories/{category}");
         }
         
+        public static Task<Response> AddRoulette(RouletteData roulette)
+        {
+            return Request.Post("/roulette/roulettes", roulette);
+        }
         
+        public static Task<Response> UpdateRoulette(RouletteData roulette)
+        {
+            return Request.Put($"/roulette/roulettes/{roulette.ID}", roulette);
+        }
+        
+        public static Task<Response> DeleteRoulette(string id)
+        {
+            return Request.Delete($"/roulette/roulettes/{id}");
+        }
     }
 }

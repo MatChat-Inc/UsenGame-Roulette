@@ -164,7 +164,7 @@ namespace USEN.Games.Roulette
                 }
                 else _manager.AddRoulette(result);
                 
-                _manager.Sync();
+                // _manager.Sync();
             }
         }
 
