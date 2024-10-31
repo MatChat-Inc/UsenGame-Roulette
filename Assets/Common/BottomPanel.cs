@@ -19,6 +19,7 @@ namespace USEN.Games.Common
         public Button yellowButton;
         
         public bool clickExitToPop = false;
+        public bool playSound = true;
         
         public event Action onExitButtonClicked;
         public event Action onSelectButtonClicked;
@@ -106,35 +107,44 @@ namespace USEN.Games.Common
         {
             if (!confirmButton.isActiveAndEnabled) return;
             onConfirmButtonClicked?.Invoke();
-            SFXManager.Play(R.Audios.SfxRouletteConfirm);
+            
+            if (playSound)
+                SFXManager.Play(R.Audios.SfxRouletteConfirm);
         }
 
         private void OnRedButtonClicked()
         {
             if (!redButton.isActiveAndEnabled) return;
             onRedButtonClicked?.Invoke();
-            SFXManager.Play(R.Audios.SfxRouletteConfirm);
+            
+            if (playSound)
+                SFXManager.Play(R.Audios.SfxRouletteConfirm);
         }
 
         private void OnBlueButtonClicked()
         {
             if (!blueButton.isActiveAndEnabled) return;
             onBlueButtonClicked?.Invoke();
-            SFXManager.Play(R.Audios.SfxRouletteConfirm);
+            if (playSound)
+                SFXManager.Play(R.Audios.SfxRouletteConfirm);
         }
 
         private void OnGreenButtonClicked()
         {
             if (!greenButton.isActiveAndEnabled) return;
             onGreenButtonClicked?.Invoke();
-            SFXManager.Play(R.Audios.SfxRouletteConfirm);
+            
+            if (playSound)
+                SFXManager.Play(R.Audios.SfxRouletteConfirm);
         }
 
         private void OnYellowButtonClicked()
         {
             if (!yellowButton.isActiveAndEnabled) return;
             onYellowButtonClicked?.Invoke();
-            SFXManager.Play(R.Audios.SfxRouletteConfirm);
+            
+            if (playSound)
+                SFXManager.Play(R.Audios.SfxRouletteConfirm);
         }
     }
 }
