@@ -87,6 +87,14 @@ namespace Usen
             var postTask = Client.PostAsync(path, content);
             return postTask.ContinueWith(task =>
             {
+                if (!task.Result.IsSuccessStatusCode)
+                {
+                    Debug.LogError($"Request {path} failed: {task.Result.StatusCode}");
+#if UNITY_ANDROID
+                    Android.ShowToast($"Request {path} failed: {task.Result.StatusCode}");
+#endif
+                }
+                
                 var content = task.Result.Content.ReadAsStringAsync();
                 return content.ContinueWith(task => {
                     return JsonConvert.DeserializeObject<T>(task.Result);

@@ -145,18 +145,17 @@ namespace USEN.Games.Roulette
             return batuGames[UnityEngine.Random.Range(0, batuGames.Count - 1)];
         }
         
-        public void AddRoulette(RouletteData roulette)
+        public async Task AddRoulette(RouletteData roulette)
         {
             db.Insert(roulette);
             IsDirty = true;
-            API.AddRoulette(roulette).ContinueWith(task =>
-            {
-                if (task.IsFaulted)
-                {
-                    Debug.LogWarning($"[RouletteManager] Add failed: {task.Exception}");
-                    IsDirty = false;
-                }
-            });
+            var response = await API.AddRoulette(roulette);
+            
+            // Update ID with the response.
+            roulette.ID = response.id;
+            db.Update(roulette);
+            
+            IsDirty = false;
         }
         
         public void InsertFromJsonList(string json)

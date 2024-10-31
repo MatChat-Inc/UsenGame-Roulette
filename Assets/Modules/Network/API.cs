@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using USEN.Games.Roulette;
+using Usen.Models;
 
 namespace Usen
 {
@@ -18,9 +19,9 @@ namespace Usen
             return Request.Get<RouletteCategory>($"/roulette/categories/{category}");
         }
         
-        public static Task<Response> AddRoulette(RouletteData roulette)
+        public static Task<AddRouletteResponse> AddRoulette(RouletteData roulette)
         {
-            return Request.Post("/roulette/roulettes", roulette);
+            return Request.Post<AddRouletteResponse>("/roulette/roulettes", roulette);
         }
         
         public static Task<Response> UpdateRoulette(RouletteData roulette)

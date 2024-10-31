@@ -89,7 +89,7 @@ namespace USEN.Games.Roulette
             bottomPanel.onRedButtonClicked += () =>
             {
                 Navigator.Pop(Data);
-                RouletteManager.Instance.Sync();
+                // RouletteManager.Instance.Sync();
             };
             
             // Delete the selected sector when the yellow button is clicked
@@ -175,9 +175,16 @@ namespace USEN.Games.Roulette
             if (Data.sectors.Count >= 10) return;
             
             var newSector = new RouletteSector();
-            newSector.color = RandomColor(0.5f);
             sectorListView.Add(newSector, 0);
             sectorCounter.text = $"{sectorListView.Count}";
+            
+            // // Set color for each sector
+            for (int i = 0; i < Data.sectors.Count; i++)
+            {
+                var sector = Data.sectors[i];
+                sector.id = i;
+                sector.color = RouletteData.GetSectorColor(i, Data.sectors.Count);
+            }
             
             await UniTask.DelayFrame(1);
             SetNavigation();

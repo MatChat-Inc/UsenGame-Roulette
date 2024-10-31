@@ -1,5 +1,6 @@
 // Created by LunarEclipse on 2024-6-21 1:53.
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Luna;
@@ -9,6 +10,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace USEN.Games.Roulette
 {
@@ -33,13 +36,6 @@ namespace USEN.Games.Roulette
             BgmManager.Volume = RoulettePreferences.BgmVolume;
             SFXManager.Volume = RoulettePreferences.SfxVolume;
             
-            // Load the roulette data
-            RouletteManager.Instance.Sync().ContinueWith(async task => {
-                _categories = task.Result;
-                EventSystem.current.SetSelectedGameObject(startButton.gameObject);
-                startButton.interactable = true;
-            }, TaskScheduler.FromCurrentSynchronizationContext());
-            
             Navigator.Instance.onPopped += (route) => {
                 SFXManager.Play(R.Audios.SfxRouletteBack);
             };
@@ -47,6 +43,16 @@ namespace USEN.Games.Roulette
 #if UNITY_ANDROID
             Debug.Log($"TV: {USEN.AndroidPreferences.TVIdentifier}");      
 #endif
+        }
+
+        private void OnEnable()
+        {
+            // Load the roulette data
+            RouletteManager.Instance.Sync().ContinueWith(async task => {
+                _categories = task.Result;
+                EventSystem.current.SetSelectedGameObject(startButton.gameObject);
+                startButton.interactable = true;
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void Update()
