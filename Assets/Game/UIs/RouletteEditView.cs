@@ -194,7 +194,7 @@ namespace USEN.Games.Roulette
         {
             if (Data.sectors.Count <= 2) return;
 
-            sectorListView.Remove(0);
+            sectorListView.Remove(0, false);
             sectorCounter.text = $"{sectorListView.Count}";
             
             await UniTask.DelayFrame(1);
