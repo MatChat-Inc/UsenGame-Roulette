@@ -110,7 +110,7 @@ namespace USEN.Games.Roulette
         
         public void OnExitButtonClicked()
         {
-            SceneManager.LoadScene("GameEntries");
+            Application.Quit();
         }
     }
 }
