@@ -245,7 +245,12 @@ namespace USEN.Games.Roulette
                 {
                     popup.onOption1 = () => Navigator.Pop();
                     popup.onOption2 = () => Navigator.PopToRoot(); //Navigator.PopUntil<RouletteStartView>();
-                    popup.onOption3 = () => SceneManager.LoadScene("GameEntries");
+                    // popup.onOption3 = () => SceneManager.LoadScene("GameEntries");
+#if UNITY_ANDROID
+                    popup.onOption3 = () => Android.Back();
+#else
+                    popup.onOption3 = () => Application.Quit();
+#endif
                 });
         }
         
