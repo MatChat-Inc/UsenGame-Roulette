@@ -177,7 +177,6 @@ namespace USEN.Games.Roulette
             confirmText.text = "停止";
             
             // Hide bottom buttons
-            bottomPanel.confirmButton.gameObject.SetActive(false);
             bottomPanel.yellowButton.gameObject.SetActive(false);
             bottomPanel.blueButton.gameObject.SetActive(false);
             bottomPanel.redButton.gameObject.SetActive(false);
@@ -238,6 +237,8 @@ namespace USEN.Games.Roulette
             // Stop sfx and play another sfx
             SFXManager.Stop(R.Audios.SfxRouletteGameRotating);
             SFXManager.Play(R.Audios.SfxRouletteGameDecelerating);
+            
+            bottomPanel.confirmButton.gameObject.SetActive(false);
         }
 
         private void PopupConfirmView()
