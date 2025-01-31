@@ -7,6 +7,7 @@ namespace USEN
 {
     public static class AndroidPreferences
     {
+        public static string Ssid => Android.GetStatic<string>("com.usen.game.plugin.ConfigManager", "ssid");
         public static string TVIdentifier => Android.GetStatic<string>("com.usen.game.plugin.ConfigManager", "tvIdentifier");
         // {
         //     get
