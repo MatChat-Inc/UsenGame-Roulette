@@ -81,6 +81,11 @@ namespace USEN.Games.Roulette
             {
                 Luna.Android.ShowToast(USEN.AndroidPreferences.TVIdentifier);
             }
+            
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                Luna.Android.ShowToast(USEN.AndroidPreferences.Ssid);
+            }
 #endif
         }
 
