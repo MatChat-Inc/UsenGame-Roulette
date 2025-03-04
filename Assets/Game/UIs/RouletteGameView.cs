@@ -78,13 +78,13 @@ namespace USEN.Games.Roulette
             _originalPosition = rouletteWheel.transform.parent.localPosition;
             _originalScale = rouletteWheel.transform.parent.localScale;
             
-            AssetUtils.LoadAsync<CommendView>().ContinueWith(task =>
-            {
-                var go = task.Result;
-                var commendView = go.GetComponent<CommendView>();
-                if (commendView != null)
-                    _audioClipHandle = commendView.PreloadAudio();
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            // AssetUtils.LoadAsync<CommendView>().ContinueWith(task =>
+            // {
+            //     var go = task.Result;
+            //     var commendView = go.GetComponent<CommendView>();
+            //     if (commendView != null)
+            //         _audioClipHandle = commendView.PreloadAudio();
+            // }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void Update()
