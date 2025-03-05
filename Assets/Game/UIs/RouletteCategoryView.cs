@@ -4,6 +4,7 @@ using Luna.UI;
 using Luna.UI.Navigation;
 using Sirenix.Utilities;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using USEN.Games.Common;
 using Random = UnityEngine.Random;
 
@@ -34,11 +35,10 @@ namespace USEN.Games.Roulette
 
         private void OnEnable()
         {
-            if (RouletteManager.Instance.IsDirty)
-            {
+            if (RouletteManager.Instance.IsDirty) 
                 Categories = RouletteManager.Instance.GetCategories();
-                listView.FocusOnCell(0);
-            }
+            
+            listView.FocusOnCell(listView.SelectedIndex);
         }
 
         private void Update()

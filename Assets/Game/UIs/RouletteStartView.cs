@@ -1,9 +1,12 @@
 // Created by LunarEclipse on 2024-6-21 1:53.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Luna;
+using Luna.Extensions;
 using Luna.UI;
 using Luna.UI.Navigation;
 using UnityEngine;
@@ -20,35 +23,40 @@ namespace USEN.Games.Roulette
         public Button startButton;
         public Button settingsButton;
         
-        public AudioClip bgmClip;
-        
         private RouletteManager _manager;
         private RouletteCategories _categories;
         
-        private void Start()
+        private Task<RouletteCategories> _httpTask;
+        
+        private async void Start()
         {
-            BgmManager.Play(bgmClip);
-            
-            // Preload all roulette widgets
-            Assets.Load<Object>(GetType().Namespace, "Audio");
-            
             // Audio volume
             BgmManager.Volume = RoulettePreferences.BgmVolume;
             SFXManager.Volume = RoulettePreferences.SfxVolume;
             
+            // Show loading indicator before necessary assets are loaded
+            await UniTask.Yield(PlayerLoopTiming.PreLateUpdate);
+            Navigator.ShowModal<RoundedCircularLoadingIndicator>();
+            
+            // Preload audios
+            var bgmTask = R.Audios.BgmRouletteLoop.Load();
+            bgmTask.Then(BgmManager.Play);
+            var audioTask =  Assets.Load(GetType().Namespace, "Audio");
+            
+            await Task.WhenAll(bgmTask, audioTask, _httpTask);
+            
+            
+            Navigator.PopToRoot();
             Navigator.Instance.onPopped += (route) => {
                 SFXManager.Play(R.Audios.SfxRouletteBack);
             };
-
-#if UNITY_ANDROID
-            Debug.Log($"TV: {USEN.AndroidPreferences.TVIdentifier}");      
-#endif
         }
 
         private void OnEnable()
         {
             // Load the roulette data
-            RouletteManager.Instance.Sync().ContinueWith(async task => {
+            _httpTask = RouletteManager.Instance.Sync();
+            _httpTask.ContinueWith(async task => {
                 _categories = task.Result;
                 if (startButton.interactable == false)
                     EventSystem.current.SetSelectedGameObject(startButton.gameObject);
@@ -66,6 +74,7 @@ namespace USEN.Games.Roulette
                 Input.GetButtonDown("Cancel")) {
                 OnExitButtonClicked();
             }
+                        
 #if UNITY_ANDROID
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {

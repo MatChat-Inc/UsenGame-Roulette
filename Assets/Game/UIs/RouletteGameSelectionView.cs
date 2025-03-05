@@ -135,16 +135,6 @@ namespace USEN.Games.Roulette
 
         public async void OnBlueButtonClicked()
         {
-            // Jump back to original category if not in original category
-            if (_editMode == EditMode.Readonly && 
-                Category.roulettes.Count > 0)
-            {
-                var categoryView = Navigator.BackTo<RouletteCategoryView>();
-                categoryView?.GotoOriginalCategory(view => {
-                    view.selectLast = true;
-                });
-            }
-            
             // Edit roulette
             var result = await Navigator.Push<RouletteEditView>((view) => {
                 view.Data = rouletteGameSelectionList.SelectedData;
@@ -165,6 +155,15 @@ namespace USEN.Games.Roulette
                 else _manager.AddRoulette(result);
                 
                 // _manager.Sync();
+            }
+            
+            // Jump back to original category if not in original category
+            if (_editMode == EditMode.Readonly && Category.roulettes.Count > 0)
+            {
+                var categoryView = Navigator.BackTo<RouletteCategoryView>();
+                categoryView?.GotoOriginalCategory(view => {
+                    view.selectLast = true;
+                });
             }
         }
 
