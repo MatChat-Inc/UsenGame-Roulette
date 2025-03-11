@@ -86,6 +86,8 @@ namespace USEN.Games.Roulette
             // {
             //     Category = _manager.GetCategory(Category.title);
             // }
+            
+            if (selectLast) rouletteGameSelectionList.SnapTo(rouletteGameSelectionList.SelectedCell.transform as RectTransform);
         }
 
         private void OnDisable()
