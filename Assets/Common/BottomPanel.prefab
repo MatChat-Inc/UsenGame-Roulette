@@ -1549,7 +1549,7 @@ MonoBehaviour:
   greenButton: {fileID: 5872971045949453190}
   yellowButton: {fileID: 2510505324792747815}
   clickExitToPop: 0
-  playSound: 1
+  playSound: 0
 --- !u!1 &5445333287488442384
 GameObject:
   m_ObjectHideFlags: 0

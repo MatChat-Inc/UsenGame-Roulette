@@ -100,9 +100,9 @@ namespace USEN.Games.Roulette
         {
             SFXManager.StopAll();
             
-            AssetUtils.Unload<CommendView>();
-            if (_audioClipHandle != null)
-                Addressables.Release(_audioClipHandle.Value);
+            // AssetUtils.Unload<CommendView>();
+            // if (_audioClipHandle != null)
+            //     Addressables.Release(_audioClipHandle.Value);
         }
 
         private KeyEventResult OnKeyEvent(KeyControl key, KeyEvent @event)

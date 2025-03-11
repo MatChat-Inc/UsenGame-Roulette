@@ -1006,6 +1006,8 @@ GameObject:
   - component: {fileID: 3639503637701855853}
   - component: {fileID: 4595261665307201789}
   - component: {fileID: 223898580378477275}
+  - component: {fileID: 7791807178129668404}
+  - component: {fileID: 1368581364067964140}
   m_Layer: 5
   m_Name: RouletteEditView
   m_TagString: Untagged
@@ -1075,6 +1077,44 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!223 &7791807178129668404
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3639503637701855843}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &1368581364067964140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3639503637701855843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &3639503637735848538
 GameObject:
   m_ObjectHideFlags: 0
@@ -3030,6 +3070,8 @@ GameObject:
   - component: {fileID: 3639503638931826795}
   - component: {fileID: 8769056469293252367}
   - component: {fileID: 4969711500435859243}
+  - component: {fileID: 2365971469123180759}
+  - component: {fileID: 3653777839172538782}
   m_Layer: 5
   m_Name: ListView
   m_TagString: Untagged
@@ -3138,11 +3180,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f17c3ee909594d9bac87f668265a8b40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  snapMode: 0
   cell: {fileID: 5103345519594862845}
-  snapToCellWhenSelected: 1
   selectFirstCellOnEnable: 0
   selectFirstCellOnReload: 0
   keepSelectionOnReload: 0
+  snapToCellWhenSelected: 1
 --- !u!225 &4969711500435859243
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3155,6 +3198,44 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!223 &2365971469123180759
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3639503638931826793}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &3653777839172538782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3639503638931826793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &3639503639013063421
 GameObject:
   m_ObjectHideFlags: 0

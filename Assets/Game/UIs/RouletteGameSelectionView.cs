@@ -71,7 +71,8 @@ namespace USEN.Games.Roulette
         {
             if (selectLast && rouletteGameSelectionList.Data.Count > 0)
                 UniTask.DelayFrame(2).ContinueWith(() => {
-                    rouletteGameSelectionList.Select(rouletteGameSelectionList.Data.Count - 1);
+                    if (gameObject.activeInHierarchy)
+                        rouletteGameSelectionList.Select(rouletteGameSelectionList.Data.Count - 1);
                 });
         }
 
@@ -82,12 +83,11 @@ namespace USEN.Games.Roulette
             bottomPanel.onBlueButtonClicked += OnBlueButtonClicked;
             bottomPanel.onYellowButtonClicked += OnYellowButtonClicked;
 
-            // if (_manager.IsDirty)
-            // {
-            //     Category = _manager.GetCategory(Category.title);
-            // }
-            
-            if (selectLast) rouletteGameSelectionList.SnapTo(rouletteGameSelectionList.SelectedCell.transform as RectTransform);
+            if (selectLast && rouletteGameSelectionList.Initialized)
+                UniTask.NextFrame().ContinueWith(() => {
+                    rouletteGameSelectionList.FocusOnCell(rouletteGameSelectionList.Data.Count - 1, 0.5f);
+                    selectLast = false;
+                });
         }
 
         private void OnDisable()
@@ -205,7 +205,6 @@ namespace USEN.Games.Roulette
                     Category.roulettes.Add(result);
                     // Category = Category;
                     rouletteGameSelectionList.Reload();
-                    rouletteGameSelectionList.Select(Category.roulettes.Count - 1);
                     rouletteWheel.RouletteData = result;
                 }
                 
@@ -216,6 +215,9 @@ namespace USEN.Games.Roulette
             }
             
             CheckRoulette();
+
+            await UniTask.NextFrame();
+            rouletteGameSelectionList.Select(Category.roulettes.Count - 1);
         }
         
         public void OnYellowButtonClicked()
