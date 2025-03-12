@@ -164,7 +164,6 @@ namespace USEN.Games.Roulette
         public async Task AddRoulette(RouletteData roulette)
         {
             try {
-                roulette.ID = "";
                 db.Insert(roulette);
             }
             catch (Exception e)

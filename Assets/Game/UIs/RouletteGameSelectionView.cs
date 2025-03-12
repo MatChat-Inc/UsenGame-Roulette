@@ -154,7 +154,11 @@ namespace USEN.Games.Roulette
                     rouletteGameSelectionList.Reload();
                     _manager.UpdateRoulette(result);
                 }
-                else _manager.AddRoulette(result);
+                else
+                {
+                    result.GenerateNewID();
+                    _manager.AddRoulette(result);
+                }
                 
                 // _manager.Sync();
             }
