@@ -84,7 +84,7 @@ namespace USEN.Games.Roulette
             bottomPanel.onYellowButtonClicked += OnYellowButtonClicked;
 
             if (selectLast && rouletteGameSelectionList.Initialized)
-                UniTask.NextFrame().ContinueWith(() => {
+                UniTask.DelayFrame(2).ContinueWith(() => {
                     rouletteGameSelectionList.FocusOnCell(rouletteGameSelectionList.Data.Count - 1, 0.5f);
                     selectLast = false;
                 });
