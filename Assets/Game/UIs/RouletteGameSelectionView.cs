@@ -105,6 +105,8 @@ namespace USEN.Games.Roulette
             }
             
             CheckRoulette();
+            
+            Debug.Log($"Current selection: {EventSystem.current.currentSelectedGameObject}");
         }
         
         public void OnConfirmButtonClicked()
