@@ -106,8 +106,6 @@ namespace USEN.Games.Roulette
             }
             
             CheckRoulette();
-
-            Debug.Log($"Current selection: {EventSystem.current.currentSelectedGameObject}");
         }
         
         public void OnConfirmButtonClicked()
@@ -162,7 +160,9 @@ namespace USEN.Games.Roulette
                     result.GenerateNewID();
                     _manager.AddRoulette(result);
                 }
-                
+            }
+            else
+            {
                 // Jump back to original category if not in original category
                 if (_editMode == EditMode.Readonly && Category.roulettes.Count > 0)
                 {
