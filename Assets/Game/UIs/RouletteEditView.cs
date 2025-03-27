@@ -77,9 +77,7 @@ namespace USEN.Games.Roulette
             
             bottomPanel.onBlueButtonClicked += async () =>
             {
-                Navigator.Pop(Data);
-                await UniTask.NextFrame();
-                Navigator.Push<RouletteGameView>(async (view) =>
+                Navigator.PushReplacement<RouletteGameView>(async (view) =>
                 {
                     Navigator.Instance.PreviousRoute.LastSelected = null;
                     await UniTask.NextFrame();

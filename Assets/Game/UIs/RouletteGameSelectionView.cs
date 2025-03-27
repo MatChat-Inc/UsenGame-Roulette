@@ -106,6 +106,8 @@ namespace USEN.Games.Roulette
             }
             
             CheckRoulette();
+
+            Debug.Log($"Current selection: {EventSystem.current.currentSelectedGameObject}");
         }
         
         public void OnConfirmButtonClicked()
@@ -161,16 +163,14 @@ namespace USEN.Games.Roulette
                     _manager.AddRoulette(result);
                 }
                 
-                // _manager.Sync();
-            }
-            
-            // Jump back to original category if not in original category
-            if (_editMode == EditMode.Readonly && Category.roulettes.Count > 0)
-            {
-                var categoryView = Navigator.BackTo<RouletteCategoryView>();
-                categoryView?.GotoOriginalCategory(view => {
-                    view.selectLast = true;
-                });
+                // Jump back to original category if not in original category
+                if (_editMode == EditMode.Readonly && Category.roulettes.Count > 0)
+                {
+                    var categoryView = Navigator.BackTo<RouletteCategoryView>();
+                    categoryView?.GotoOriginalCategory(view => {
+                        view.selectLast = true;
+                    });
+                }
             }
         }
 
