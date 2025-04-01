@@ -77,7 +77,9 @@ namespace USEN.Games.Roulette
             
             bottomPanel.onBlueButtonClicked += async () =>
             {
-                Navigator.PushReplacement<RouletteGameView>(async (view) =>
+                Navigator.Pop(Data);
+                await UniTask.NextFrame();
+                Navigator.Push<RouletteGameView>(async (view) =>
                 {
                     Navigator.Instance.PreviousRoute.LastSelected = null;
                     await UniTask.NextFrame();
@@ -225,6 +227,23 @@ namespace USEN.Games.Roulette
         private Color RandomColor(float saturation = 1, float brightness = 1)
         {
             return Color.HSVToRGB(Random.value, saturation, brightness);
+        }
+
+        private RouletteData createNewRoulette()
+        {
+            var roulette = new RouletteData();
+            roulette.Title = "新規ルーレット";
+            roulette.sectors = new List<RouletteSector>();
+            for (int i = 0; i < 8; i++)
+            {
+                roulette.sectors.Add(new RouletteSector()
+                {
+                    content = $"",
+                    weight = 1,
+                    color = RouletteData.GetSectorColor(i, 8)
+                });
+            }
+            return roulette;
         }
     }
 }

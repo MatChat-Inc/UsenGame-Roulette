@@ -184,6 +184,7 @@ namespace USEN.Games.Roulette
                 {
                     content = $"",
                     weight = 1,
+                    color = RouletteData.GetSectorColor(i, 8)
                 });
             }
             
@@ -206,7 +207,6 @@ namespace USEN.Games.Roulette
                 if (IsOriginal)
                 {
                     Category.roulettes.Add(result);
-                    // Category = Category;
                     rouletteGameSelectionList.Reload();
                     rouletteWheel.RouletteData = result;
                 }
@@ -214,7 +214,6 @@ namespace USEN.Games.Roulette
                 result.Category = "オリジナル";
                 
                 _manager.AddRoulette(result);
-                // _manager?.Sync();
             }
             
             CheckRoulette();
