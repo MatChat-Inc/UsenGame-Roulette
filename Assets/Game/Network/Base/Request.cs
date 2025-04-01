@@ -33,6 +33,9 @@ namespace USEN
             var ssid = "01HA1S5FCXKDB78KGBZ0QP3HYQ";
             var tvIdentifier = "N00000000000000065760";
 #endif
+
+            
+            Debug.Log($"Request with ssid={ssid}, tvIdentifier={tvIdentifier}");
             
             Client.DefaultRequestHeaders.Add("x-umid", ssid);
             Client.DefaultRequestHeaders.Add("neosContractCd", tvIdentifier);
@@ -46,7 +49,10 @@ namespace USEN
                 var result = task.Result;
                 var content = result.Content.ReadAsStringAsync();
                 if (result.IsSuccessStatusCode)
-                    return content.ContinueWith(task => JsonConvert.DeserializeObject<T>(task.Result)).Result;
+                    return content.ContinueWith(task => {
+                        Debug.Log($"GET {path} result: {task.Result}");
+                        return JsonConvert.DeserializeObject<T>(task.Result);
+                    }).Result;
                 return null;
             });
         }
@@ -60,12 +66,14 @@ namespace USEN
         {
             var json = JsonConvert.SerializeObject(data, new IgnoreJsonProperties("id"));
             var content = new StringContent(json);
+            Debug.Log($"POST {path} with json: {json}");
             content.Headers.ContentType = new("application/json");
             
             var postTask = Client.PostAsync(path, content);
             return postTask.ContinueWith(task => {
                 var content = task.Result.Content.ReadAsStringAsync();
                 return content.ContinueWith(task => {
+                    Debug.Log($"POST {path} result: {task.Result}");
                     return JsonConvert.DeserializeObject<T>(task.Result);
                 }).Result;
             });
@@ -80,12 +88,17 @@ namespace USEN
         {
             var json = JsonConvert.SerializeObject(data, new IgnoreJsonProperties("id"));
             var content = new StringContent(json);
+            Debug.Log($"PUT {path} with json: {json}");
             content.Headers.ContentType = new("application/json");
             
             var response = Client.PutAsync(path, content);
             return response.ContinueWith(task => {
                 var content = task.Result.Content.ReadAsStringAsync();
-                return content.ContinueWith(task => JsonConvert.DeserializeObject<T>(task.Result)).Result;
+                return content.ContinueWith(task =>
+                {
+                    Debug.Log($"PUT {path} result: {task.Result}");
+                    return JsonConvert.DeserializeObject<T>(task.Result);
+                }).Result;
             });
         }
         
