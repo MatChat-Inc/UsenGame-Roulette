@@ -123,7 +123,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!1 &4808328051194502261
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,7 +599,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6000763715045426500, guid: 98b9f96af753ec348ad19380f4bcfa41, type: 3}
       propertyPath: snapMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6000763715045426500, guid: 98b9f96af753ec348ad19380f4bcfa41, type: 3}
       propertyPath: data.Array.size
