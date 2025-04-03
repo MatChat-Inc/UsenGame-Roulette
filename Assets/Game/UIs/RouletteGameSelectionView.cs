@@ -147,6 +147,7 @@ namespace USEN.Games.Roulette
             if (result != null)
             {
                 result.Category = "オリジナル";
+                var seletedIndex = rouletteGameSelectionList.SelectedIndex;
                 
                 if (IsOriginal)
                 {
@@ -168,6 +169,11 @@ namespace USEN.Games.Roulette
                     categoryView?.GotoOriginalCategory(view => {
                         view.selectLast = true;
                     });
+                }
+                else
+                {
+                    await UniTask.DelayFrame(2);
+                    rouletteGameSelectionList.Select(seletedIndex);
                 }
             }
         }
