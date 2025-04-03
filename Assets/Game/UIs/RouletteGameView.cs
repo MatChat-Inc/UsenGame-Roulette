@@ -145,7 +145,7 @@ namespace USEN.Games.Roulette
             switch (RoulettePreferences.DisplayMode)
             {
                 case RouletteDisplayMode.Normal:
-                    Navigator.Pop();
+                    Navigator.Pop(RouletteData);
                     break;
                 case RouletteDisplayMode.Random:
                     ResetRoulette();
@@ -162,7 +162,7 @@ namespace USEN.Games.Roulette
         {
             SFXManager.Stop(R.Audios.SfxRouletteConfirm);
             SFXManager.Stop(R.Audios.SfxRouletteGameRotating);
-            Navigator.PopUntil<RouletteCategoryView>();
+            Navigator.PopUntil<RouletteCategoryView, RouletteData>(RouletteData);
         }
 
         private async void OnYellowButtonClicked()
@@ -246,13 +246,13 @@ namespace USEN.Games.Roulette
             Navigator.ShowModal<PopupOptionsView>(
                 builder: (popup) =>
                 {
-                    popup.onOption1 = () => Navigator.Pop();
+                    popup.onOption1 = () => Navigator.Pop(RouletteData);
                     popup.onOption2 = () =>
                     {
                         SFXManager.Stop();
                         
-                        Navigator.PopToRoot();
-                        //Navigator.PopUntil<RouletteStartView>();
+                        // Navigator.PopToRoot();
+                        Navigator.PopUntil<RouletteStartView, RouletteData>(RouletteData);
                     }; 
                     // popup.onOption3 = () => SceneManager.LoadScene("GameEntries");
 #if UNITY_ANDROID
