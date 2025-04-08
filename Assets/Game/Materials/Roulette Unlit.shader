@@ -1,146 +1,192 @@
-Shader "Hidden/Roystan/Outline Post Process"
+Shader "Usen/Roulette Sector"
 {
+    Properties
+    {
+        _MainTex ("Sprite Texture", 2D) = "white" {}
+
+        // Legacy properties. They're here so that materials using this shader can gracefully fallback to the legacy sprite shader.
+        [HideInInspector] _Color ("Tint", Color) = (1,1,1,1)
+        [HideInInspector] PixelSnap ("Pixel snap", Float) = 0
+        [HideInInspector] _RendererColor ("RendererColor", Color) = (1,1,1,1)
+        [HideInInspector] _Flip ("Flip", Vector) = (1,1,1,1)
+        [HideInInspector] _AlphaTex ("External Alpha", 2D) = "white" {}
+        [HideInInspector] _EnableExternalAlpha ("Enable External Alpha", Float) = 0
+    }
+
     SubShader
     {
-        Cull Off ZWrite Off ZTest Always
+        Tags {"Queue" = "Transparent" "RenderType" = "Transparent" "RenderPipeline" = "UniversalPipeline" }
+
+        Blend SrcAlpha OneMinusSrcAlpha
+        Cull Off
+        ZWrite Off
 
         Pass
         {
-			// Custom post processing effects are written in HLSL blocks,
-			// with lots of macros to aid with platform differences.
-			// https://github.com/Unity-Technologies/PostProcessing/wiki/Writing-Custom-Effects#shader
+            Tags { "LightMode" = "Universal2D" }
+
             HLSLPROGRAM
-            #pragma vertex Vert
-            #pragma fragment Frag
-			#include "Packages/com.unity.postprocessing/PostProcessing/Shaders/StdLib.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #if defined(DEBUG_DISPLAY)
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/InputData2D.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/SurfaceData2D.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Debug/Debugging2D.hlsl"
+            #endif
 
-			TEXTURE2D_SAMPLER2D(_MainTex, sampler_MainTex);
-			// _CameraNormalsTexture contains the view space normals transformed
-			// to be in the 0...1 range.
-			TEXTURE2D_SAMPLER2D(_CameraNormalsTexture, sampler_CameraNormalsTexture);
-			TEXTURE2D_SAMPLER2D(_CameraDepthTexture, sampler_CameraDepthTexture);
-        
-			// Data pertaining to _MainTex's dimensions.
-			// https://docs.unity3d.com/Manual/SL-PropertiesInPrograms.html
-			float4 _MainTex_TexelSize;
+            #pragma vertex UnlitVertex
+            #pragma fragment UnlitFragment
 
-			float _Scale;
-			float4 _Color;
+            #pragma multi_compile _ DEBUG_DISPLAY
 
-			float _DepthThreshold;
-			float _DepthNormalThreshold;
-			float _DepthNormalThresholdScale;
+            struct Attributes
+            {
+                float3 positionOS   : POSITION;
+                float4 color        : COLOR;
+                float2 uv           : TEXCOORD0;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
 
-			float _NormalThreshold;
+            struct Varyings
+            {
+                float4  positionCS  : SV_POSITION;
+                half4   color       : COLOR;
+                float2  uv          : TEXCOORD0;
+                #if defined(DEBUG_DISPLAY)
+                float3  positionWS  : TEXCOORD2;
+                #endif
+                UNITY_VERTEX_OUTPUT_STEREO
+            };
 
-			// This matrix is populated in PostProcessOutline.cs.
-			float4x4 _ClipToView;
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
+            half4 _MainTex_ST;
+            float4 _Color;
+            half4 _RendererColor;
 
-			// Combines the top and bottom colors using normal blending.
-			// https://en.wikipedia.org/wiki/Blend_modes#Normal_blend_mode
-			// This performs the same operation as Blend SrcAlpha OneMinusSrcAlpha.
-			float4 alphaBlend(float4 top, float4 bottom)
-			{
-				float3 color = (top.rgb * top.a) + (bottom.rgb * (1 - top.a));
-				float alpha = top.a + bottom.a * (1 - top.a);
+            Varyings UnlitVertex(Attributes attributes)
+            {
+                Varyings o = (Varyings)0;
+                UNITY_SETUP_INSTANCE_ID(attributes);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
-				return float4(color, alpha);
-			}
+                float3 position = attributes.positionOS;
+                // position += float3(1, 0, 0);
 
-			// Both the Varyings struct and the Vert shader are copied
-			// from StdLib.hlsl included above, with some modifications.
-			struct Varyings
-			{
-				float4 vertex : SV_POSITION;
-				float2 texcoord : TEXCOORD0;
-				float2 texcoordStereo : TEXCOORD1;
-				float3 viewSpaceDir : TEXCOORD2;
-			#if STEREO_INSTANCING_ENABLED
-				uint stereoTargetEyeIndex : SV_RenderTargetArrayIndex;
-			#endif
-			};
+                o.positionCS = TransformObjectToHClip(position);
+                #if defined(DEBUG_DISPLAY)
+                o.positionWS = TransformObjectToWorld(position);
+                #endif
+                o.uv = TRANSFORM_TEX(attributes.uv, _MainTex);
+                o.color = attributes.color * _Color * _RendererColor;
+                
+                return o;
+            }
 
-			Varyings Vert(AttributesDefault v)
-			{
-				Varyings o;
-				o.vertex = float4(v.vertex.xy, 0.0, 1.0);
-				o.texcoord = TransformTriangleVertexToUV(v.vertex.xy);
-				// Transform our point first from clip to view space,
-				// taking the xyz to interpret it as a direction.
-				o.viewSpaceDir = mul(_ClipToView, o.vertex).xyz;
+            half4 UnlitFragment(Varyings i) : SV_Target
+            {
+                float4 mainTex = i.color * SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
 
-			#if UNITY_UV_STARTS_AT_TOP
-				o.texcoord = o.texcoord * float2(1.0, -1.0) + float2(0.0, 1.0);
-			#endif
+                #if defined(DEBUG_DISPLAY)
+                SurfaceData2D surfaceData;
+                InputData2D inputData;
+                half4 debugColor = 0;
 
-				o.texcoordStereo = TransformStereoScreenSpaceTex(o.texcoord, 1.0);
+                InitializeSurfaceData(mainTex.rgb, mainTex.a, surfaceData);
+                InitializeInputData(i.uv, inputData);
+                SETUP_DEBUG_DATA_2D(inputData, i.positionWS);
 
-				return o;
-			}
+                if(CanDebugOverrideOutputColor(surfaceData, inputData, debugColor))
+                {
+                    return debugColor;
+                }
+                #endif
 
-			float4 Frag(Varyings i) : SV_Target
-			{
-				float halfScaleFloor = floor(_Scale * 0.5);
-				float halfScaleCeil = ceil(_Scale * 0.5);
+                return mainTex;
+            }
+            ENDHLSL
+        }
 
-				// Sample the pixels in an X shape, roughly centered around i.texcoord.
-				// As the _CameraDepthTexture and _CameraNormalsTexture default samplers
-				// use point filtering, we use the above variables to ensure we offset
-				// exactly one pixel at a time.
-				float2 bottomLeftUV = i.texcoord - float2(_MainTex_TexelSize.x, _MainTex_TexelSize.y) * halfScaleFloor;
-				float2 topRightUV = i.texcoord + float2(_MainTex_TexelSize.x, _MainTex_TexelSize.y) * halfScaleCeil;  
-				float2 bottomRightUV = i.texcoord + float2(_MainTex_TexelSize.x * halfScaleCeil, -_MainTex_TexelSize.y * halfScaleFloor);
-				float2 topLeftUV = i.texcoord + float2(-_MainTex_TexelSize.x * halfScaleFloor, _MainTex_TexelSize.y * halfScaleCeil);
+        Pass
+        {
+            Tags { "LightMode" = "UniversalForward" "Queue"="Transparent" "RenderType"="Transparent"}
 
-				float3 normal0 = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, bottomLeftUV).rgb;
-				float3 normal1 = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, topRightUV).rgb;
-				float3 normal2 = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, bottomRightUV).rgb;
-				float3 normal3 = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, topLeftUV).rgb;
+            HLSLPROGRAM
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #if defined(DEBUG_DISPLAY)
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/InputData2D.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/SurfaceData2D.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Debug/Debugging2D.hlsl"
+            #endif
 
-				float depth0 = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, bottomLeftUV).r;
-				float depth1 = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, topRightUV).r;
-				float depth2 = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, bottomRightUV).r;
-				float depth3 = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, topLeftUV).r;
+            #pragma vertex UnlitVertex
+            #pragma fragment UnlitFragment
 
-				// Transform the view normal from the 0...1 range to the -1...1 range.
-				float3 viewNormal = normal0 * 2 - 1;
-				float NdotV = 1 - dot(viewNormal, -i.viewSpaceDir);
+            #pragma multi_compile_fragment _ DEBUG_DISPLAY
 
-				// Return a value in the 0...1 range depending on where NdotV lies 
-				// between _DepthNormalThreshold and 1.
-				float normalThreshold01 = saturate((NdotV - _DepthNormalThreshold) / (1 - _DepthNormalThreshold));
-				// Scale the threshold, and add 1 so that it is in the range of 1..._NormalThresholdScale + 1.
-				float normalThreshold = normalThreshold01 * _DepthNormalThresholdScale + 1;
+            struct Attributes
+            {
+                float3 positionOS   : POSITION;
+                float4 color        : COLOR;
+                float2 uv           : TEXCOORD0;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
 
-				// Modulate the threshold by the existing depth value;
-				// pixels further from the screen will require smaller differences
-				// to draw an edge.
-				float depthThreshold = _DepthThreshold * depth0 * normalThreshold;
+            struct Varyings
+            {
+                float4  positionCS      : SV_POSITION;
+                float4  color           : COLOR;
+                float2  uv              : TEXCOORD0;
+                #if defined(DEBUG_DISPLAY)
+                float3  positionWS      : TEXCOORD2;
+                #endif
+                UNITY_VERTEX_OUTPUT_STEREO
+            };
 
-				float depthFiniteDifference0 = depth1 - depth0;
-				float depthFiniteDifference1 = depth3 - depth2;
-				// edgeDepth is calculated using the Roberts cross operator.
-				// The same operation is applied to the normal below.
-				// https://en.wikipedia.org/wiki/Roberts_cross
-				float edgeDepth = sqrt(pow(depthFiniteDifference0, 2) + pow(depthFiniteDifference1, 2)) * 100;
-				edgeDepth = edgeDepth > depthThreshold ? 1 : 0;
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
+            float4 _MainTex_ST;
+            float4 _Color;
+            half4 _RendererColor;
 
-				float3 normalFiniteDifference0 = normal1 - normal0;
-				float3 normalFiniteDifference1 = normal3 - normal2;
-				// Dot the finite differences with themselves to transform the 
-				// three-dimensional values to scalars.
-				float edgeNormal = sqrt(dot(normalFiniteDifference0, normalFiniteDifference0) + dot(normalFiniteDifference1, normalFiniteDifference1));
-				edgeNormal = edgeNormal > _NormalThreshold ? 1 : 0;
+            Varyings UnlitVertex(Attributes attributes)
+            {
+                Varyings o = (Varyings)0;
+                UNITY_SETUP_INSTANCE_ID(attributes);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
-				float edge = max(edgeDepth, edgeNormal);
+                o.positionCS = TransformObjectToHClip(attributes.positionOS);
+                #if defined(DEBUG_DISPLAY)
+                o.positionWS = TransformObjectToWorld(attributes.positionOS);
+                #endif
+                o.uv = TRANSFORM_TEX(attributes.uv, _MainTex);
+                o.color = attributes.color * _Color * _RendererColor;
+                return o;
+            }
 
-				float4 edgeColor = float4(_Color.rgb, _Color.a * edge);
+            float4 UnlitFragment(Varyings i) : SV_Target
+            {
+                float4 mainTex = i.color * SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
 
-				float4 color = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.texcoord);
+                #if defined(DEBUG_DISPLAY)
+                SurfaceData2D surfaceData;
+                InputData2D inputData;
+                half4 debugColor = 0;
 
-				return alphaBlend(edgeColor, color);
-			}
+                InitializeSurfaceData(mainTex.rgb, mainTex.a, surfaceData);
+                InitializeInputData(i.uv, inputData);
+                SETUP_DEBUG_DATA_2D(inputData, i.positionWS);
+
+                if(CanDebugOverrideOutputColor(surfaceData, inputData, debugColor))
+                {
+                    return debugColor;
+                }
+                #endif
+
+                return mainTex;
+            }
             ENDHLSL
         }
     }
+
+    Fallback "Sprites/Default"
 }
