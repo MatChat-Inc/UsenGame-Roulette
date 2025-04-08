@@ -1,5 +1,6 @@
 // Created by LunarEclipse on 2024-6-21 1:45.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -141,6 +142,7 @@ namespace USEN.Games.Roulette
             // Edit roulette
             var result = await Navigator.Push<RouletteEditView>((view) => {
                 view.Data = rouletteGameSelectionList.SelectedData;
+                view.ShouldCreateNew = !IsOriginal;
             }) as RouletteData;
             
             // Add to category and save
@@ -154,12 +156,6 @@ namespace USEN.Games.Roulette
                     Category.roulettes[rouletteGameSelectionList.SelectedIndex] = result;
                     rouletteWheel.RouletteData = result;
                     rouletteGameSelectionList.Reload();
-                    _manager.UpdateRoulette(result);
-                }
-                else
-                {
-                    result.GenerateNewID();
-                    _manager.AddRoulette(result);
                 }
                 
                 // Jump back to original category if not in original category
@@ -180,24 +176,8 @@ namespace USEN.Games.Roulette
 
         public async void OnRedButtonClicked()
         {
-            // Create new roulette
-            var roulette = new RouletteData();
-            roulette.Title = "新規ルーレット";
-            roulette.sectors = new List<RouletteSector>();
-            for (int i = 0; i < 8; i++)
-            {
-                roulette.sectors.Add(new RouletteSector()
-                {
-                    content = $"",
-                    weight = 1,
-                    color = RouletteData.GetSectorColor(i, 8)
-                });
-            }
-            
             // Open edit view
-            var result = await Navigator.Push<RouletteEditView>((view) => {
-                view.Data = roulette;
-            }) as RouletteData;
+            var result = await Navigator.Push<RouletteEditView>() as RouletteData;
             
             // Add to category and save
             if (result != null)
@@ -219,7 +199,7 @@ namespace USEN.Games.Roulette
                 
                 result.Category = "オリジナル";
                 
-                _manager.AddRoulette(result);
+                // _manager.AddRoulette(result);
             }
             
             CheckRoulette();

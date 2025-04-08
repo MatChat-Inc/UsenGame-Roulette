@@ -35,9 +35,7 @@ namespace USEN.Games.Roulette
 
         private void OnEnable()
         {
-            if (RouletteManager.Instance.IsDirty) 
-                Categories = RouletteManager.Instance.GetCategories();
-            
+            Categories = RouletteManager.Instance.GetCategories();
             listView.FocusOnCell(listView.SelectedIndex);
         }
 

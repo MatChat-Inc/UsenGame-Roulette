@@ -1057,6 +1057,7 @@ MonoBehaviour:
   sectorCounter: {fileID: 4955644691175703787}
   sectorListView: {fileID: 8769056469293252367}
   bottomPanel: {fileID: 878786955879519400}
+  updateDatabaseAutomatically: 1
 --- !u!222 &4595261665307201789
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3184,7 +3185,7 @@ MonoBehaviour:
   cell: {fileID: 5103345519594862845}
   selectFirstCellOnEnable: 0
   selectFirstCellOnReload: 0
-  keepSelectionOnReload: 0
+  keepSelection: 0
   snapToCellWhenSelected: 1
 --- !u!225 &4969711500435859243
 CanvasGroup:

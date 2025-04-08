@@ -602,6 +602,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6000763715045426500, guid: 98b9f96af753ec348ad19380f4bcfa41, type: 3}
+      propertyPath: keepSelection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6000763715045426500, guid: 98b9f96af753ec348ad19380f4bcfa41, type: 3}
       propertyPath: data.Array.size
       value: 0
       objectReference: {fileID: 0}
