@@ -803,6 +803,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2674142673516653920, guid: 96b874bb70f59b04ba2d70862ad0bf4b, type: 3}
+      propertyPath: alwaysSelectFirstCell
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2674142673516653920, guid: 96b874bb70f59b04ba2d70862ad0bf4b, type: 3}
       propertyPath: selectFirstCellOnEnable
       value: 1
       objectReference: {fileID: 0}

@@ -210,7 +210,7 @@ namespace USEN.Games.Roulette
             
             CheckRoulette();
 
-            await UniTask.NextFrame();
+            await UniTask.DelayFrame(2);
             rouletteGameSelectionList.Select(Category.roulettes.Count - 1);
         }
         

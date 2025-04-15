@@ -3182,8 +3182,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   snapMode: 0
   cell: {fileID: 5103345519594862845}
-  selectFirstCellOnEnable: 0
   keepSelection: 0
+  alwaysSelectFirstCell: 0
   snapToCellWhenSelected: 1
 --- !u!225 &4969711500435859243
 CanvasGroup:

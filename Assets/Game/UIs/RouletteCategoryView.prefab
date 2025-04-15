@@ -1616,6 +1616,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2343208549086404350, guid: ab08e89e0bc37cb4aa62934ce7221b32, type: 3}
+      propertyPath: alwaysSelectFirstCell
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2343208549086404350, guid: ab08e89e0bc37cb4aa62934ce7221b32, type: 3}
       propertyPath: keepSelectionOnReload
       value: 1
       objectReference: {fileID: 0}
