@@ -21,7 +21,7 @@ using Random = UnityEngine.Random;
 
 namespace USEN.Games.Roulette
 {
-    public class RouletteGameView : Widget
+    public partial class RouletteGameView : Widget
     {
         public RouletteWheel rouletteWheel;
         public Button startButton;
@@ -85,6 +85,10 @@ namespace USEN.Games.Roulette
             //     if (commendView != null)
             //         _audioClipHandle = commendView.PreloadAudio();
             // }, TaskScheduler.FromCurrentSynchronizationContext());
+            
+#if !USEN_ROULETTE
+            bottomPanel.redButton.gameObject.SetActive(false);
+#endif
         }
 
         private void Update()
@@ -160,7 +164,7 @@ namespace USEN.Games.Roulette
 
         private void OnRedButtonClicked()
         {
-            SFXManager.Stop(R.Audios.SfxRouletteConfirm);
+            SFXManager.Stop(R.Audios.SfxConfirm);
             SFXManager.Stop(R.Audios.SfxRouletteGameRotating);
             Navigator.PopUntil<RouletteCategoryView, RouletteData>(RouletteData);
         }
@@ -179,7 +183,9 @@ namespace USEN.Games.Roulette
             // Hide bottom buttons
             bottomPanel.yellowButton.gameObject.SetActive(false);
             bottomPanel.blueButton.gameObject.SetActive(false);
+#if USEN_ROULETTE
             bottomPanel.redButton.gameObject.SetActive(false);
+#endif
         }
         
         private void OnSpinEnd(string obj)
@@ -190,7 +196,9 @@ namespace USEN.Games.Roulette
             bottomPanel.confirmButton.gameObject.SetActive(true);
             bottomPanel.yellowButton.gameObject.SetActive(true);
             bottomPanel.blueButton.gameObject.SetActive(true);
-            bottomPanel.redButton.gameObject.SetActive(true);
+#if USEN_ROULETTE
+            bottomPanel.redButton.gameObject.SetActive(true);      
+#endif
             
             _isStopping = false;
         }
@@ -203,7 +211,7 @@ namespace USEN.Games.Roulette
             if (startButton.gameObject.activeSelf)
             {
                 startButton.gameObject.SetActive(false);
-                SFXManager.Play(R.Audios.SfxRouletteConfirm);
+                SFXManager.Play(R.Audios.SfxConfirm);
             }
 
             // Spin the wheel
@@ -240,7 +248,8 @@ namespace USEN.Games.Roulette
             
             bottomPanel.confirmButton.gameObject.SetActive(false);
         }
-
+        
+#if USEN_ROULETTE
         private void PopupConfirmView()
         {
             Navigator.ShowModal<PopupOptionsView>(
@@ -250,11 +259,8 @@ namespace USEN.Games.Roulette
                     popup.onOption2 = () =>
                     {
                         SFXManager.Stop();
-                        
-                        // Navigator.PopToRoot();
                         Navigator.PopUntil<RouletteStartView, RouletteData>(RouletteData);
                     }; 
-                    // popup.onOption3 = () => SceneManager.LoadScene("GameEntries");
 #if UNITY_ANDROID
                     popup.onOption3 = () => Android.Back();
 #else
@@ -262,6 +268,7 @@ namespace USEN.Games.Roulette
 #endif
                 });
         }
+#endif
         
         private void ResetRoulette()
         {

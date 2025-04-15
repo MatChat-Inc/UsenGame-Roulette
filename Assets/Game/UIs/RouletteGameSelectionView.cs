@@ -43,12 +43,18 @@ namespace USEN.Games.Roulette
                 {
                     _editMode = EditMode.Editable;
                     bottomPanel.redButton.gameObject.SetActive(true);
+#if !USEN_ROULETTE
+                    bottomPanel.blueButton.gameObject.SetActive(true);              
+#endif
                 }
                 else
                 {
                     _editMode = EditMode.Readonly;
                     bottomPanel.redButton.gameObject.SetActive(false);
                     bottomPanel.yellowButton.gameObject.SetActive(false);
+#if !USEN_ROULETTE
+                    bottomPanel.blueButton.gameObject.SetActive(false);              
+#endif
                 }
 
                 titleText.text = value.title;
@@ -246,7 +252,7 @@ namespace USEN.Games.Roulette
                 rouletteGameSelectionList.gameObject.SetActive(true);
                 rouletteGameSelectionList.Select(rouletteGameSelectionList.SelectedIndex);
                 SFXManager.Stop();
-                SFXManager.Play(R.Audios.SfxRouletteBack);
+                SFXManager.Play(R.Audios.SfxBack);
             }
         }
         

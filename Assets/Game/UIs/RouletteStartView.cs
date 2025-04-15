@@ -48,7 +48,7 @@ namespace USEN.Games.Roulette
             
             Navigator.PopToRoot();
             Navigator.Instance.onPopped += (route) => {
-                SFXManager.Play(R.Audios.SfxRouletteBack);
+                SFXManager.Play(R.Audios.SfxBack);
             };
         }
 
