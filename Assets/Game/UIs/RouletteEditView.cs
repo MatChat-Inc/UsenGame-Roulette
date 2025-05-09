@@ -91,11 +91,11 @@ namespace USEN.Games.Roulette
             
             await UniTask.DelayFrame(1);
             gameTitle.DeactivateInputField();
+            EventSystem.current.SetSelectedGameObject(titleCell.gameObject);
         }
 
         private void OnEnable()
         {
-            EventSystem.current.SetSelectedGameObject(titleCell.gameObject);
             base.OnKey += OnKeyEvent;
         }
 
@@ -107,8 +107,10 @@ namespace USEN.Games.Roulette
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape) ||
-                Input.GetButtonDown("Cancel")) {
-                if (!_isEditing) Navigator.Pop();
+                Input.GetButtonDown("Cancel"))
+            {
+                if (!_isEditing) 
+                    PopupConfirmView();
             }
 
             if (EventSystem.current.currentSelectedGameObject == sectorCounterButton.gameObject)
@@ -268,6 +270,22 @@ namespace USEN.Games.Roulette
                 else Debug.LogWarning($"[RouletteEditView] Roulette already exists: {Data.Title}");
             }
             else rm.UpdateRoulette(Data);
+        }
+        
+        private void PopupConfirmView()
+        {
+            Navigator.ShowModal<AlertDialogue>((dialogue) => {
+                dialogue.Content = "編集中の内容を保存せずに終了しますか？";
+                dialogue.onConfirm = () =>
+                {
+                    Navigator.Pop();
+                    Navigator.Pop();
+                };
+                dialogue.onCancel = async () =>
+                {
+
+                };
+            });
         }
     }
 }

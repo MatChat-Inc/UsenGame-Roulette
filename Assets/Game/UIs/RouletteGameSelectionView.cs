@@ -205,16 +205,39 @@ namespace USEN.Games.Roulette
                 
                 result.Category = "オリジナル";
                 
-                // _manager.AddRoulette(result);
-            }
-            
-            CheckRoulette();
+                CheckRoulette();
 
-            await UniTask.DelayFrame(2);
-            rouletteGameSelectionList.Select(Category.roulettes.Count - 1);
+                await UniTask.DelayFrame(2);
+                rouletteGameSelectionList.Select(Category.roulettes.Count - 1);
+            }
         }
         
+        /// Delete roulette
         public void OnYellowButtonClicked()
+        {
+            PopupDeleteConfirmView();
+        }
+        
+        private void ShowContentView()
+        {
+            rouletteGameSelectionList.gameObject.SetActive(false);
+            rouletteContentList.Data = rouletteGameSelectionList.SelectedData.sectors;
+            rouletteContentList.gameObject.SetActive(true);
+        }
+        
+        private void HideContentView()
+        {
+            if (rouletteContentList.gameObject.activeSelf)
+            {
+                rouletteContentList.gameObject.SetActive(false);
+                rouletteGameSelectionList.gameObject.SetActive(true);
+                rouletteGameSelectionList.Select(rouletteGameSelectionList.SelectedIndex);
+                SFXManager.Stop();
+                SFXManager.Play(R.Audios.SfxBack);
+            }
+        }
+        
+        private void DeleteSelectedRoulette()
         {
             if (rouletteGameSelectionList.gameObject.activeSelf &&
                 rouletteGameSelectionList.Data.Count > 0)
@@ -237,25 +260,6 @@ namespace USEN.Games.Roulette
             CheckRoulette();
         }
         
-        private void ShowContentView()
-        {
-            rouletteGameSelectionList.gameObject.SetActive(false);
-            rouletteContentList.Data = rouletteGameSelectionList.SelectedData.sectors;
-            rouletteContentList.gameObject.SetActive(true);
-        }
-        
-        private void HideContentView()
-        {
-            if (rouletteContentList.gameObject.activeSelf)
-            {
-                rouletteContentList.gameObject.SetActive(false);
-                rouletteGameSelectionList.gameObject.SetActive(true);
-                rouletteGameSelectionList.Select(rouletteGameSelectionList.SelectedIndex);
-                SFXManager.Stop();
-                SFXManager.Play(R.Audios.SfxBack);
-            }
-        }
-        
         private void CheckRoulette()
         {
             var hasRoulette = Category.roulettes.Count > 0;
@@ -267,6 +271,20 @@ namespace USEN.Games.Roulette
                 bottomPanel.blueButton.gameObject.SetActive(hasRoulette);
                 bottomPanel.yellowButton.gameObject.SetActive(hasRoulette);
             }
+        }
+        
+        private void PopupDeleteConfirmView()
+        {
+            Navigator.ShowModal<AlertDialogue>((dialogue) =>
+            {
+                dialogue.Title = "削除しますか？";
+                dialogue.Content = "※一度削除したルーレットは復元できません。";
+                dialogue.onConfirm = () =>
+                {
+                    Navigator.Pop();
+                    DeleteSelectedRoulette();
+                };
+            });
         }
         
         private void ReloadCategory()
