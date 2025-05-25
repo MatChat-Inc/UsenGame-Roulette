@@ -24,6 +24,7 @@ namespace USEN.Games.Roulette
     public partial class RouletteGameView : Widget
     {
         public RouletteWheel rouletteWheel;
+        public ParticleSystem rouletteParticle;
         public Button startButton;
         public Image backgroundImage;
         public BottomPanel bottomPanel;
@@ -203,6 +204,8 @@ namespace USEN.Games.Roulette
             _isStopping = false;
             
             // Play sfx
+            rouletteParticle.gameObject.SetActive(true);
+            
             var sector = rouletteWheel.GetSector(index);
             var border = sector.transform.Find("Border").gameObject;
             var lineRenderer = border.GetComponent<LineRenderer>();
@@ -220,7 +223,9 @@ namespace USEN.Games.Roulette
                 () => lineRenderer.material.color,
                 color => lineRenderer.material.SetColor("_Color", color), 
                 Color.clear, 
-                1f); 
+                1f);
+            
+            rouletteParticle.gameObject.SetActive(false);
         }
 
         private async Task SpinWheel()

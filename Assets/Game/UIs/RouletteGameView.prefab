@@ -344,6 +344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rouletteWheel: {fileID: 3725162734924712925}
+  rouletteParticle: {fileID: 5340266309141207170}
   startButton: {fileID: 7383198668330630975}
   backgroundImage: {fileID: 3710891070689023771}
   bottomPanel: {fileID: 813345272954349311}
@@ -876,7 +877,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1922438551318038445, guid: 0c380f4697fab384e97d3c38dbb7f523, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1679.995
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1922438551318038445, guid: 0c380f4697fab384e97d3c38dbb7f523, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1044,7 +1045,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3467195953606923170, guid: 0c380f4697fab384e97d3c38dbb7f523, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 664.97
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3467195953606923170, guid: 0c380f4697fab384e97d3c38dbb7f523, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1068,7 +1069,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3604714613323532280, guid: 0c380f4697fab384e97d3c38dbb7f523, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1264.985
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3604714613323532280, guid: 0c380f4697fab384e97d3c38dbb7f523, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1256,7 +1257,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7992953217732209196, guid: 0c380f4697fab384e97d3c38dbb7f523, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 894.975
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7992953217732209196, guid: 0c380f4697fab384e97d3c38dbb7f523, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1702,5 +1703,10 @@ MonoBehaviour:
 --- !u!212 &3725162735150356295 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 8834609411485472600, guid: 8a23a45f3ae9f924e8c3d2693096170b, type: 3}
+  m_PrefabInstance: {fileID: 5271667558993543199}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5340266309141207170 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 231045175447378077, guid: 8a23a45f3ae9f924e8c3d2693096170b, type: 3}
   m_PrefabInstance: {fileID: 5271667558993543199}
   m_PrefabAsset: {fileID: 0}
