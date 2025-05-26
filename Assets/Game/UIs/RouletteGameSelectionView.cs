@@ -174,7 +174,7 @@ namespace USEN.Games.Roulette
                 }
                 else
                 {
-                    await UniTask.DelayFrame(2);
+                    await UniTask.DelayFrame(3);
                     rouletteGameSelectionList.Select(seletedIndex);
                 }
             }
@@ -207,7 +207,7 @@ namespace USEN.Games.Roulette
                 
                 CheckRoulette();
 
-                await UniTask.DelayFrame(2);
+                await UniTask.DelayFrame(3);
                 rouletteGameSelectionList.Select(Category.roulettes.Count - 1);
             }
         }
