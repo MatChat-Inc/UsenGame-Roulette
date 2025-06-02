@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Luna;
 using Luna.UI;
@@ -86,6 +87,8 @@ namespace USEN.Games.Roulette
                     Data = CreateNewRoulette();
                 else Data.GenerateNewID();
             }
+            
+            await UniTask.DelayFrame(1);
             
             SetNavigation();
             
@@ -258,7 +261,7 @@ namespace USEN.Games.Roulette
             return roulette;
         }
 
-        private void SaveChanges()
+        private async void SaveChanges()
         {
             var rm = RouletteManager.Instance;
             if (rm == null) return;
@@ -266,7 +269,10 @@ namespace USEN.Games.Roulette
             if (ShouldCreateNew)
             {
                 if (!rm.ExistsRoulette(Data))
-                    rm.AddRoulette(Data);
+                {
+                    var newRoulette = await rm.AddRoulette(Data);
+                    Data.ID = newRoulette.ID;
+                }
                 else Debug.LogWarning($"[RouletteEditView] Roulette already exists: {Data.Title}");
             }
             else rm.UpdateRoulette(Data);

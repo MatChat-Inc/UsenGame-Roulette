@@ -143,9 +143,10 @@ namespace USEN.Games.Roulette
             }
         }
 
+        // Edit roulette
         public async void OnBlueButtonClicked()
         {
-            // Edit roulette
+            // Open edit view
             var result = await Navigator.Push<RouletteEditView>((view) => {
                 view.Data = rouletteGameSelectionList.SelectedData;
                 view.ShouldCreateNew = !IsOriginal;
@@ -180,6 +181,7 @@ namespace USEN.Games.Roulette
             }
         }
 
+        // New roulette
         public async void OnRedButtonClicked()
         {
             // Open edit view

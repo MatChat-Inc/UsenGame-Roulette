@@ -161,7 +161,7 @@ namespace USEN.Games.Roulette
             return batuGames[nextIndex];
         }
         
-        public async Task AddRoulette(RouletteData roulette)
+        public async Task<RouletteData> AddRoulette(RouletteData roulette)
         {
             try {
                 db.Insert(roulette);
@@ -179,6 +179,8 @@ namespace USEN.Games.Roulette
             db.Update(roulette);
             
             IsDirty = false;
+
+            return roulette;
         }
         
         public void InsertFromJsonList(string json)
