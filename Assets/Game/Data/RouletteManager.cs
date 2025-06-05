@@ -163,6 +163,12 @@ namespace USEN.Games.Roulette
         
         public async Task<RouletteData> AddRoulette(RouletteData roulette)
         {
+            IsDirty = true;
+            var response = await API.AddRoulette(roulette);
+            
+            // Update ID with the response.
+            roulette.ID = response.id;
+            
             try {
                 db.Insert(roulette);
             }
@@ -170,13 +176,6 @@ namespace USEN.Games.Roulette
             {
                 Debug.LogWarning($"[RouletteManager] Add failed: {e.Message}");
             }
-
-            IsDirty = true;
-            var response = await API.AddRoulette(roulette);
-            
-            // Update ID with the response.
-            roulette.ID = response.id;
-            db.Update(roulette);
             
             IsDirty = false;
 
