@@ -47,7 +47,11 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
-          androidExportType: 'androidStudioProject'
+          androidKeystoreName: debug.keystore
+          androidKeystoreBase64: ${{ secrets.USEN_ANDROID_KEYSTORE_BASE64 }}
+          androidKeystorePass: ${{ secrets.USEN_ANDROID_KEYSTORE_PASS }}
+          androidKeyaliasName: ${{ secrets.USEN_ANDROID_KEYALIAS_NAME }}
+          androidKeyaliasPass: ${{ secrets.USEN_ANDROID_KEYSTORE_PASS }}
 
       # Compress
       # - name: Compress Directory
