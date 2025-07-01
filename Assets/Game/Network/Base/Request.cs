@@ -16,16 +16,6 @@ namespace USEN
 
         static Request()
         {
-            Client = new()
-            {
-                // BaseAddress = new Uri("https://api-stg.tvsignage.usen.com/"),
-                BaseAddress = new Uri("https://api.tvsignage.usen.com/"),
-                DefaultRequestHeaders = {
-                    Accept = { new("application/json") },
-                    Authorization = new("750900428"),
-                },
-            };
-            
 #if !DEBUG && UNITY_ANDROID
             var ssid = USEN.AndroidPreferences.Ssid ?? "01HA1S5FCXKDB78KGBZ0QP3HYQ";
             var tvIdentifier = USEN.AndroidPreferences.TVIdentifier ?? "N00000000000000065760";
@@ -33,9 +23,21 @@ namespace USEN
             var ssid = "01HA1S5FCXKDB78KGBZ0QP3HYQ";
             var tvIdentifier = "N00000000000000065760";
 #endif
-
             
             Debug.Log($"Request with ssid={ssid}, tvIdentifier={tvIdentifier}");
+            
+            Client = new()
+            {
+#if DEBUG
+                BaseAddress = new Uri("https://api-stg.tvsignage.usen.com/"),
+#else
+                BaseAddress = new Uri("https://api.tvsignage.usen.com/"),
+#endif
+                DefaultRequestHeaders = {
+                    Accept = { new("application/json") },
+                    Authorization = new("750900428"),
+                },
+            };
             
             Client.DefaultRequestHeaders.Add("x-umid", ssid);
             Client.DefaultRequestHeaders.Add("neosContractCd", tvIdentifier);
