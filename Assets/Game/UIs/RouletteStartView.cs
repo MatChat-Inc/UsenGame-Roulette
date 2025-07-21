@@ -9,8 +9,11 @@ using Luna;
 using Luna.Extensions;
 using Luna.UI;
 using Luna.UI.Navigation;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
@@ -54,6 +57,8 @@ namespace USEN.Games.Roulette
 
         private void OnEnable()
         {
+            OnKey += OnKeyEvent;
+            
             // Load the roulette data
             _httpTask = RouletteManager.Instance.Sync();
             _httpTask.ContinueWith(async task => {
@@ -67,13 +72,18 @@ namespace USEN.Games.Roulette
                 RoulettePreferences.DisplayMode = (RouletteDisplayMode) task.Result.random;
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
+        
+        private void OnDisable()
+        {
+            OnKey -= OnKeyEvent;
+        }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape) ||
-                Input.GetButtonDown("Cancel")) {
-                OnExitButtonClicked();
-            }
+            // if (Input.GetKeyDown(KeyCode.Escape) ||
+            //     Input.GetButtonDown("Cancel")) {
+            //     OnExitButtonClicked();
+            // }
                         
 #if UNITY_ANDROID
             if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -106,6 +116,22 @@ namespace USEN.Games.Roulette
             // Widget.Unload(GetType().Namespace);
         }
 
+        private KeyEventResult OnKeyEvent(KeyControl key, KeyEvent keyEvent)
+        {
+            // Debug.Log($"[RouletteEditView] Key pressed: {key.keyCode} with event: {keyEvent}");
+            
+            if (keyEvent == KeyEvent.Down)
+            {
+                if (key.keyCode == Key.Escape)
+                    OnExitButtonClicked();
+                
+                if (key.keyCode == Key.Home)
+                    Android.ShowToast("Hello, home button!");
+            }
+            
+            return KeyEventResult.Unhandled;
+        }
+        
         public void OnStartButtonClicked()
         {
             Navigator.Push<RouletteCategoryView>((view) => {
