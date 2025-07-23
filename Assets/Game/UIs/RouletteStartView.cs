@@ -16,6 +16,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using USEN.Games.Common;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -33,6 +34,8 @@ namespace USEN.Games.Roulette
         
         private async void Start()
         {
+            UsenEvents.OnRemoconHomeButtonClicked += OnRemoconHomeButtonClicked;
+            
             // Audio volume
             BgmManager.Volume = RoulettePreferences.BgmVolume;
             SFXManager.Volume = RoulettePreferences.SfxVolume;
@@ -72,7 +75,7 @@ namespace USEN.Games.Roulette
                 RoulettePreferences.DisplayMode = (RouletteDisplayMode) task.Result.random;
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
-        
+
         private void OnDisable()
         {
             OnKey -= OnKeyEvent;
@@ -105,6 +108,11 @@ namespace USEN.Games.Roulette
             {
                 Luna.Android.ShowToast(USEN.AndroidPreferences.Ssid);
             }
+            
+            if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                Navigator.Push<KeycodeTestView>();
+            }
 #endif
         }
 
@@ -124,12 +132,14 @@ namespace USEN.Games.Roulette
             {
                 if (key.keyCode == Key.Escape)
                     OnExitButtonClicked();
-                
-                if (key.keyCode == Key.Home)
-                    Android.ShowToast("Hello, home button!");
             }
             
             return KeyEventResult.Unhandled;
+        }
+        
+        private void OnRemoconHomeButtonClicked(object sender, EventArgs e)
+        {
+            Application.Quit();
         }
         
         public void OnStartButtonClicked()
