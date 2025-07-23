@@ -9,10 +9,14 @@ using Luna;
 using Luna.Extensions;
 using Luna.UI;
 using Luna.UI.Navigation;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using USEN.Games.Common;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -30,6 +34,8 @@ namespace USEN.Games.Roulette
         
         private async void Start()
         {
+            UsenEvents.OnRemoconHomeButtonClicked += OnRemoconHomeButtonClicked;
+            
             // Audio volume
             BgmManager.Volume = RoulettePreferences.BgmVolume;
             SFXManager.Volume = RoulettePreferences.SfxVolume;
@@ -54,6 +60,8 @@ namespace USEN.Games.Roulette
 
         private void OnEnable()
         {
+            OnKey += OnKeyEvent;
+            
             // Load the roulette data
             _httpTask = RouletteManager.Instance.Sync();
             _httpTask.ContinueWith(async task => {
@@ -68,12 +76,17 @@ namespace USEN.Games.Roulette
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
+        private void OnDisable()
+        {
+            OnKey -= OnKeyEvent;
+        }
+
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape) ||
-                Input.GetButtonDown("Cancel")) {
-                OnExitButtonClicked();
-            }
+            // if (Input.GetKeyDown(KeyCode.Escape) ||
+            //     Input.GetButtonDown("Cancel")) {
+            //     OnExitButtonClicked();
+            // }
                         
 #if UNITY_ANDROID
             if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -95,6 +108,11 @@ namespace USEN.Games.Roulette
             {
                 Luna.Android.ShowToast(USEN.AndroidPreferences.Ssid);
             }
+            
+            if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                Navigator.Push<KeycodeTestView>();
+            }
 #endif
         }
 
@@ -106,6 +124,24 @@ namespace USEN.Games.Roulette
             // Widget.Unload(GetType().Namespace);
         }
 
+        private KeyEventResult OnKeyEvent(KeyControl key, KeyEvent keyEvent)
+        {
+            // Debug.Log($"[RouletteEditView] Key pressed: {key.keyCode} with event: {keyEvent}");
+            
+            if (keyEvent == KeyEvent.Down)
+            {
+                if (key.keyCode == Key.Escape)
+                    OnExitButtonClicked();
+            }
+            
+            return KeyEventResult.Unhandled;
+        }
+        
+        private void OnRemoconHomeButtonClicked(object sender, EventArgs e)
+        {
+            Application.Quit();
+        }
+        
         public void OnStartButtonClicked()
         {
             Navigator.Push<RouletteCategoryView>((view) => {
