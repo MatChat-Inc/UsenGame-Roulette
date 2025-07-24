@@ -99,12 +99,12 @@ namespace USEN.Games.Roulette
                 Luna.Android.ShowToast("Hello, Android!");
             }
             
-            if (Input.GetKeyDown(KeyCode.Alpha3))
+            if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Mouse0))
             {
                 Luna.Android.ShowToast(USEN.AndroidPreferences.TVIdentifier);
             }
             
-            if (Input.GetKeyDown(KeyCode.Alpha4))
+            if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Mouse0))
             {
                 Luna.Android.ShowToast(USEN.AndroidPreferences.Ssid);
             }
