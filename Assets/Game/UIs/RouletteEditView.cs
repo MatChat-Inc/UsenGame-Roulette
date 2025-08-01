@@ -158,7 +158,7 @@ namespace USEN.Games.Roulette
         
         private async void OnBlueButtonClicked()
         {
-            SaveChanges();
+            await SaveChanges();
             
             Navigator.PushReplacement<RouletteGameView>(async (view) =>
             {
@@ -168,9 +168,9 @@ namespace USEN.Games.Roulette
             });
         }
         
-        private void OnRedButtonClicked()
+        private async void OnRedButtonClicked()
         {
-            SaveChanges();
+            await SaveChanges();
             
             Navigator.Pop(Data);
         }
@@ -261,7 +261,7 @@ namespace USEN.Games.Roulette
             return roulette;
         }
 
-        private async void SaveChanges()
+        private async Task SaveChanges()
         {
             var rm = RouletteManager.Instance;
             if (rm == null) return;
